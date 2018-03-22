@@ -18,56 +18,57 @@
 <div class="placeholder-height"></div>
 <div class="container" id="index">
 	<div class="wrap-left pull-left">
-        <div class="big-pic-box" v-if="threeRecommendInfos != null">
+        <div class="big-pic-box" v-if="displayInfoList != null">
             <div class="big-pic">
-                <a href="#" target="_blank" class="transition" :title="threeRecommendInfos[0].title">
+                <a href="#" target="_blank" class="transition" :title="displayInfoList[0].title">
                     <div class="back-img">
-                        <img class="lazy" style="height:100%" v-if="threeRecommendInfos[0].infoImage!=null" 
-                        :src="`${threeRecommendInfos[0].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[0].title">
+                        <img class="lazy" style="height:100%" v-if="displayInfoList[0].infoImage!=null" 
+                        :src="`${displayInfoList[0].infoImage.image}`" :onerror="defaultImg" :alt="displayInfoList[0].title">
                     </div>
                     <div class="big-pic-content">
-                        <h1 class="t-h1">{{threeRecommendInfos[0].title}}</h1>
+                        <h1 class="t-h1">{{displayInfoList[0].title}}</h1>
                     </div>
                 </a>
             </div>
             <div class="big2-pic big2-pic-index big2-pic-index-top">
-                <a href="#" class="back-img transition" target="_blank" :title="threeRecommendInfos[1].title">
-                    <img class="lazy" style="height:100%" v-if="threeRecommendInfos[1].infoImage!=null" 
-                    :src="`${threeRecommendInfos[1].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[1].title">
+                <a href="#" class="back-img transition" target="_blank" :title="displayInfoList[1].title">
+                    <img class="lazy" style="height:100%" v-if="displayInfoList[1].infoImage!=null" 
+                    :src="`${displayInfoList[1].infoImage.image}`" :onerror="defaultImg" :alt="displayInfoList[1].title">
                 </a>
-                <a href="#" target="_blank" :title="threeRecommendInfos[1].title">
+                <a href="#" target="_blank" :title="displayInfoList[1].title">
                     <div class="big2-pic-content">
-                        <h2 class="t-h1">{{threeRecommendInfos[1].title}}</h2>
+                        <h2 class="t-h1">{{displayInfoList[1].title}}</h2>
                     </div>
                 </a>
             </div>
             <div class="big2-pic big2-pic-index big2-pic-index-bottom">
-                <a href="#" class="back-img transition" target="_blank" :title="threeRecommendInfos[2].title">
-                    <img class="lazy" style="height:100%" v-if="threeRecommendInfos[2].infoImage!=null" 
-                    :src="`${threeRecommendInfos[2].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[2].title">
+                <a href="#" class="back-img transition" target="_blank" :title="displayInfoList[2].title">
+                    <img class="lazy" style="height:100%" v-if="displayInfoList[2].infoImage!=null" 
+                    :src="`${displayInfoList[2].infoImage.image}`" :onerror="defaultImg" :alt="displayInfoList[2].title">
                 </a>
-                <a href="#" target="_blank" :title="threeRecommendInfos[2].title">
+                <a href="#" target="_blank" :title="displayInfoList[2].title">
                     <div class="big2-pic-content">
-                        <h2 class="t-h1">{{threeRecommendInfos[2].title}}</h2>
+                        <h2 class="t-h1">{{displayInfoList[2].title}}</h2>
                     </div>
                 </a>
             </div>
        </div>
-    <div class="msgAlert" :class="{'active': isMsgAlert}">
+        <div class="msgAlert" :class="{'active': isMsgAlert}">
            <p class="msgAlert-text">{{isMsgAlertText}}</p>
        </div>
-       <div class="mod-info-flow"  v-if="infoList != null">
-            <div class="mod-b mod-art" data-aid="213665" v-for="info in infoList">
+       <div class="mod-info-flow"  v-if="displayInfoList != null">
+            <div class="mod-b mod-art" v-for="(info,index) in displayInfoList" v-if="index>2 && !info.isRemove">
             	 <div class="mod-angle">热</div>
                  <div class="mod-thumb ">
-                       <a class="transition" title="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低" href="#" target="_blank">
+                       <a class="transition" :title="info.title" href="#" target="_blank">
 						  <img class="lazy" style="height:100%" v-if="info.infoImage!=null" :src="`${info.infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低">
                        </a>
                  </div>
-                 <div class="column-link-box">
-                 	<a href="#" class="column-link" target="_blank">不感兴趣
-                         <i class="icon-not-interst"></i>
-                     </a>
+                 <div class="column-link-box not-interest" @click="notInterest(index)">
+                 	<!-- <a href="#" class="column-link" target="_blank"> -->
+                         不感兴趣
+                         <i class="icon-not-interest" style="background-size: 15px 15px;"></i>
+                     <!-- </a> -->
                  </div>
                  <div class="mob-ctt">
                     <h2><router-link :to="`/article/${info.infoId}`" class="transition msubstr-row2" :class="{'isRead': info.isRead}">{{info.title}}</router-link></h2>
@@ -117,7 +118,7 @@
                                         </li>
                         				<li>
                             				<p>{{comment.userInfo.nickname}}</p>
-                            				<p>3分钟前</p>
+                            				<p>{{comment.createTime | formatDateDiff}}</p>
                         				</li>
                     				</ul>
                 				</div>
@@ -418,10 +419,12 @@ export default {
             defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
             infoList: null,
             threeRecommendInfos: null,
+            displayInfoList: null,
             logInfoList: [],
             hotCommentList: [],
             typeList: [],
             page: 1,
+            
         }
     },
     components:{
@@ -439,49 +442,88 @@ export default {
             })
             this.isLogined = true
         }
+        this.initData()
         getHotComments().then(res=>{
             if(res.status === 1){
                 this.hotCommentList = res.result
-            }
-        })
-        getLogInfos().then(res=>{
-            if(res.status === 1){
-                this.logInfoList = res.result
-                 pushUserByLogInfo().then((res)=>{
-                    if(res.status === 1){
-                        console.log("文章:",res.result)
-                        /* 设置文章为已读或未读 */
-                        let infos = res.result
-                        for(let info of infos){
-                            info.isRead = false
-                            for(let log of this.logInfoList){
-                                if(log.infoId === info.infoId){
-                                    console.log(info.title+"已经读过")
-                                    info.isRead = true
-                                }
-                            }
-                        }
-                        console.log(infos)
-                        this.infoList = infos
-                        this.threeRecommendInfos = []
-                        this.threeRecommendInfos.push(infos[0])
-                        this.threeRecommendInfos.push(infos[1])
-                        this.threeRecommendInfos.push(infos[2])
-                        this.infoList.splice(0,3)
-                        this.isMsgAlert = false
-                        this.isMsgAlertText = `为您推荐了${infos.length}条文章`
-                        setTimeout(()=>{
-                            this.isMsgAlert = true
-                        },3000)
-                        
-                    }
-                    
-                })
+                
             }
         })
        
     },
     methods: {
+        initData(){
+            if(!this.isLogined){
+                getInfoByDate(this.page).then(res=>{
+                    if(res.status === 1){
+                        console.log("文章:",res.result)
+                        for(let item of res.result){
+                            item.isRemove = false
+                        }
+                        this.displayInfoList = res.result
+                        // let infoLength = this.infoList.length
+                        // this.displayInfoList = []
+                        // if(infoLength <= 20){
+                        //     this.displayInfoList = this.infoList
+                        // }else{
+                        //     for(let i=0; i<20;i++){
+                        //         this.displayInfoList[i] = this.infoList[i]
+                        //     }
+                        //     this.infoList.splice(0,20)
+                        // }
+                        this.isMsgAlert = false
+                        this.isMsgAlertText = `为您推荐了${this.displayInfoList.length}条文章`
+                        setTimeout(()=>{
+                            this.isMsgAlert = true
+                        },3000)
+                    }
+                })
+            }else{
+                getLogInfos().then(res=>{
+                    if(res.status === 1){
+                        this.logInfoList = res.result
+                        pushUserByLogInfo().then((res)=>{
+                            if(res.status === 1){
+                                console.log("文章:",res.result)
+                                /* 设置文章为已读或未读 */
+                                let infos = res.result
+                                for(let info of infos){
+                                    info.isRead = false
+                                    for(let log of this.logInfoList){
+                                        if(log.infoId === info.infoId){
+                                            console.log(info.title+"已经读过")
+                                            info.isRead = true
+                                        }
+                                    }
+                                }
+                                console.log(infos)
+                                this.infoList = infos
+                                for(let item of this.infoList){
+                                    item.isRemove = false
+                                }
+                                let infoLength = this.infoList.length
+                                this.displayInfoList = []
+                                if(infoLength <= 10){
+                                    this.displayInfoList = this.infoList
+                                }else{
+                                    for(let i=0; i<10;i++){
+                                        this.displayInfoList[i] = this.infoList[i]
+                                    }
+                                    this.infoList.splice(0,10)
+                                }
+                                this.isMsgAlert = false
+                                this.isMsgAlertText = `为您推荐了${this.displayInfoList.length}条文章`
+                                setTimeout(()=>{
+                                    this.isMsgAlert = true
+                                },3000)
+                                
+                            }
+                            
+                        })
+                    }
+                })
+            }
+        },
         handleForm(...data) {
             console.log(data)
             console.log("dsadsadsa")
@@ -507,6 +549,7 @@ export default {
                         if(res.status === 1){
                             this.userInfo = res.result
                             this.showSuccessMsg({title:"成功",message:"登录成功"})
+                            this.initData()
                         }
                     })
                     // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
@@ -517,6 +560,7 @@ export default {
             })
         },
         registerConfirm () {
+            this.userInfo.userGroupId = 1
             let param = this.userInfo
             requestRegister(param).then(res => {
                 console.log(res)
@@ -566,16 +610,45 @@ export default {
                 this.isSearchShow = true
             }    
         },
+        notInterest(index){
+            if(!this.isLogined){
+				this.showSuccessMsg({message: "此操作需要登录"});
+				return
+			}
+            this.displayInfoList[index].isRemove = true
+            this.showSuccessMsg({title:"成功",message:"将减少推荐类似内容"})
+        },
         loadMore(){
-            this.page += 1
-            getInfoByDate(this.page).then((res)=>{
-                console.log(res)
-                if(res.status === 1){
-                    for(let obj of res.result){
-                        this.infoList.push(obj)
+            if(!this.isLogined){
+                this.page += 1
+                getInfoByDate(this.page).then((res)=>{
+                    console.log(res)
+                    if(res.status === 1){
+                        // for(let obj of res.result){
+                        for(let item of res.result){
+                            item.isRemove = false
+                        }
+                        this.displayInfoList = this.displayInfoList.concat(res.result)
+                        // }
                     }
+                })
+            }else{
+                let infoLength = this.infoList.length
+                if(infoLength <= 10){
+                    this.displayInfoList = this.displayInfoList.concat(this.infoList)
+                    this.infoList.splice(0,infoLength)
+                    this.showInfoMsg({title:"信息",message:"休息一下吧,暂时没有更多资讯了"})
+                }else{
+                    let length = this.displayInfoList.length
+                    for(let i=0; i<10;i++){
+                        this.displayInfoList.push( this.infoList[i])
+                    }
+                    this.infoList.splice(0,10)
                 }
-            })
+               
+                console.log(this.infoList)
+            }
+            console.log(this.displayInfoList)
         }
     },
     //通知插件
@@ -615,7 +688,7 @@ export default {
     filters: {
 		formatDateDiff(time) {
             return GetDateDiff(new Date(time));
-		}
+        }
 	}
 
 }

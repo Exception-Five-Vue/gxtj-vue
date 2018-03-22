@@ -344,6 +344,7 @@ export default {
             })
         },
         registerConfirm () {
+            this.userInfo.userGroupId = 1
             let param = this.userInfo
             requestRegister(param).then(res => {
                 console.log(res)

@@ -9,7 +9,26 @@ background-color:#fff;
 color:#333;
 font-family:Arial,微软雅黑,"Microsoft yahei","Hiragino Sans GB","冬青黑体简体中文 w3","Microsoft Yahei","Hiragino Sans GB","冬青黑体简体中文 w3",STXihei,华文细黑,SimSun,宋体,Heiti,黑体,sans-serif;
 }
-
+.mod-info-flow .not-interest{
+    color:#fff;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 4px;
+}
+.mod-info-flow .not-interest:hover{
+    background: #f63756;
+}
+.mod-info-flow  .icon-not-interst{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-size: 15px 15px;
+    background: url('../images/iclose.png');
+}
+.mod-info-flow .not-interest:hover .icon-not-interst{
+    background: url('../images/iclose-hover.png');
+    background-size: 15px 15px;
+}
 header {
 position:fixed;
 z-index:500;
@@ -836,13 +855,13 @@ font-size:28px;
 line-height:1.5;
 }
 
-.column-link-box:hover{
+/* .column-link-box:hover{
     background: #f63756;
     
 }
 .column-link-box:hover .icon-not-interst{
     background: url('../images/iclose-hover.png');
-}
+} */
 .column-link-box {
     position:absolute;
     /* bottom:25px; */
@@ -850,13 +869,13 @@ line-height:1.5;
     right:0;
     text-align:right;
     }
-    .column-link-box .icon-not-interst{
+    /* .column-link-box .icon-not-interst{
         display: inline-block;
         width: 22px;
         height: 22px;
         background: url('../images/iclose.png');
         background-repeat:no-repeat;
-    }
+    } */
 .column-link-big-box {
 width:300px;
 }

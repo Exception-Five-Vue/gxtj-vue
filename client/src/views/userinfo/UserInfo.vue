@@ -12,6 +12,7 @@
         @registerConfirm="registerConfirm"
         @logout="logout"
         @handleSearch="handleSearch"
+        @requestSearch="requestSearch"
         ></VHeader>
 <div class="placeholder-height"></div>
 <div class="edit-warp" id="per_center">
@@ -144,17 +145,18 @@
 </div>
 <div style="clear:both;"></div>
 <VFooter></VFooter>
-
+    <dialogs-wrapper tag="div" transition-name="fade" @enter="transitionEnter"></dialogs-wrapper>
+    <!-- <confirm></confirm> -->
+    <button class="md-button" @click="ask">Ask me</button>
   </section>
 </template>
 <script>
 import {requestLogin, requestRegister,updateUser,uploadAvatar,getUserInfoById} from '../../api/api.js'
-
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
 import vueCropper from './vueCropper.vue'
-
+ import { messageBox } from './dialogs'
 export default {
     data(){
         return{
@@ -209,6 +211,7 @@ export default {
     },
     components: {VHeader,VFooter,vueCropper},
     mounted(){
+        
         let token = window.localStorage.getItem("token")
         if(token!=null&&token!=""){
             // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
@@ -224,6 +227,18 @@ export default {
         }
     },
     methods: {
+        transitionEnter () {
+            console.log('`enter` event of the `transition-group` component has been fired.')
+        },
+        async ask () {
+            // call dialog function with data in the arguments
+            if (await this.$confirm({ title: 'Oh my user', content: '😊 Would you like to star vue-modal-dialogs?' })) {
+            // call dialog function with data in one object
+            if (await this.$confirm({ title: 'That is great!', content: '😀 Go to github page now?' })) {
+                window.location = 'https://github.com/hjkcai/vue-modal-dialogs'
+            } 
+            }
+        },
         /* header方法 */
         handleForm(...data) {
             console.log(data)
@@ -259,6 +274,7 @@ export default {
             })
         },
         registerConfirm () {
+            this.userInfo.userGroupId = 1
             let param = this.userInfo
             requestRegister(param).then(res => {
                 console.log(res)
@@ -280,6 +296,10 @@ export default {
             }else if(data[0] === 1){
                 this.isSearchShow = true
             }    
+        },
+        requestSearch(...data){
+            this.searchContent = data[0]
+            this.init()
         },
         submitAvatar(...data){
             let param = new FormData()
@@ -313,7 +333,7 @@ export default {
                 case 3:break
             }
         },
-        updateUserInfo(flag){
+        async updateUserInfo(flag){
             let param = {
                 userId: this.userInfo.userId,
                 username: this.userInfo.username
@@ -321,57 +341,63 @@ export default {
             switch(flag){
                 case 0: 
                     param.nickname = this.userInfo.newNickname
-                    updateUser(param).then(res=>{
-                        if(res.data.status === 1){
-                            this.contentShowFlags.splice(0, 1, false)
-                            getUserInfoById(this.userInfo.userId).then(res=>{
-                                this.showSuccessMsg({title:"成功",message:"修改成功"})
-                                this.userInfo.nickname = res.result.nickname
-                            })
-                        }
-                    })
+                    if(await this.$confirm({ title: '提示', content: '您确定要修改昵称吗?' })){
+                        updateUser(param).then(res=>{
+                            if(res.data.status === 1){
+                                this.contentShowFlags.splice(0, 1, false)
+                                getUserInfoById(this.userInfo.userId).then(res=>{
+                                    this.showSuccessMsg({title:"成功",message:"修改成功"})
+                                    this.userInfo.nickname = res.result.nickname
+                                })
+                            }
+                        })
+                    }
                     break
                 case 1:
                     param.userImageUrl = this.userInfo.newUserImageUrl
-                    updateUser(param).then(res=>{
-                        if(res.data.status === 1){
-                            this.contentShowFlags.splice(1, 1, false)
-                            getUserInfoById(this.userInfo.userId).then(res=>{
-                                this.showSuccessMsg({title:"成功",message:"修改成功"})
-                                this.userInfo.userImageUrl = res.result.userImageUrl
-                            })
-                        }
-                    })
+                    if(await this.$confirm({ title: '提示', content: '您确定要修改头像吗?' })){
+                        updateUser(param).then(res=>{
+                            if(res.data.status === 1){
+                                this.contentShowFlags.splice(1, 1, false)
+                                getUserInfoById(this.userInfo.userId).then(res=>{
+                                    this.showSuccessMsg({title:"成功",message:"修改成功"})
+                                    this.userInfo.userImageUrl = res.result.userImageUrl
+                                })
+                            }
+                        })
+                    }
                     break
                 case 2:
                     let loginParam = {
                         username: this.userInfo.username,
                         password: this.userInfo.password
                     }
-                    requestLogin(loginParam).then(res=>{
-                        if(res.data.status !== 1){
-                            this.showErrorMsg({title:"失败",message:"修改失败,密码输入不正确"})
-                            return
-                        }else{
-
-                            if(this.userInfo.newPwd !== this.userInfo.confirmPwd){
-                                this.showErrorMsg({title:"失败",message:"修改失败,两次密码输入不一致"})
+                    if(await this.$confirm({ title: '提示', content: '您确定要修改密码吗?' })){
+                        requestLogin(loginParam).then(res=>{
+                            if(res.data.status !== 1){
+                                this.showErrorMsg({title:"失败",message:"修改失败,密码输入不正确"})
                                 return
-                            }
-                            param.password = this.userInfo.newPwd
-                            updateUser(param).then(res=>{
-                                if(res.data.status === 1){
-                                    this.contentShowFlags.splice(2, 1, false)
-                                    getUserInfoById(this.userInfo.userId).then(res=>{
-                                        this.showSuccessMsg({title:"成功",message:"修改成功"})
-                                        this.userInfo.password = res.result
-                                    })
+                            }else{
+    
+                                if(this.userInfo.newPwd !== this.userInfo.confirmPwd){
+                                    this.showErrorMsg({title:"失败",message:"修改失败,两次密码输入不一致"})
+                                    return
                                 }
-                            })
+                                param.password = this.userInfo.newPwd
 
-                        }
-                    })
-                    
+                                updateUser(param).then(res=>{
+                                    if(res.data.status === 1){
+                                        this.contentShowFlags.splice(2, 1, false)
+                                        getUserInfoById(this.userInfo.userId).then(res=>{
+                                            this.showSuccessMsg({title:"成功",message:"修改成功"})
+                                            this.userInfo.password = res.result
+                                        })
+                                    }
+                                })
+
+                            }
+                        })
+                    }
                     break 
             }
         }
@@ -527,5 +553,7 @@ export default {
 }
 li.nav-news.js-show-menu ul{position: absolute; visibility: hidden; background:#fff; width:250px;  top:60px; left:-50px; z-index:9999; box-shadow:0 1px 15px rgba(18,21,21,.2);padding:10px 5px;}
 #jsddm ul li{ float:left; width:105px; padding-left:20px; line-height:40px;}
+
+
 </style>
 

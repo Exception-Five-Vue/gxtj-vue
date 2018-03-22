@@ -860,26 +860,33 @@ margin-top:-376px;
 font-size:28px;
 line-height:1.5;
 }
-#index .column-link-box {
-    top:65px;
-    bottom: inherit;
-}
 .column-link-box {
 position:absolute;
-bottom:25px;
+/* bottom:25px; */
+top:63px;
 right:0;
 text-align:right;
 }
-.column-link-box .icon-not-interst{
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    background: url('../images/iclose.png');
-    background-repeat:no-repeat;
-    background-size: 22px 22px; 
+.mod-info-flow .not-interest{
+    color:#fff;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 4px;
 }
-.column-link-big-box {
-width:300px;
+.mod-info-flow .not-interest:hover{
+    background: #f63756;
+}
+.mod-info-flow  .icon-not-interest{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background: url('../images/iclose.png');
+}
+.mod-info-flow .not-interest:hover .icon-not-interest{
+    background: url('../images/iclose-hover.png');
+    background-size: 15px 15px;
 }
 
 .column-link-big-box .column-link {
@@ -900,16 +907,16 @@ margin-left:20px;
     color: #fff;
 }
 #index .column-link-box:hover{
-    background: rgba(0,0,0,.3);
+    /* background: rgba(0,0,0,.3); */
 }
-#index .column-link-box:hover .icon-not-interst{
+/* #index .column-link-box:hover .icon-not-interst{
     display: inline-block;
     width: 22px;
     height: 22px;
     background-repeat:no-repeat;
     background-size: 22px 22px; 
     background: url('../images/iclose-hover.png');
-}
+} */
 .column-link a{
     
 }
@@ -6799,6 +6806,16 @@ display:inline-block;
 .mod-info-flow .isRead{
     color: #bbb;
 }
+.mod-info-flow .mod-b{
+    transition: .5s;
+    /* transition-property: display; */
+
+}
+/* .mod-info-flow .mod-b.fadeOut{
+    display: none;
+    margin-left: -100%;
+    visibility: hidden;
+} */
 .mod-b:last-child,.mod-b.dp-box-active,.promote-box ul li:last-child,.article-left-btn-group ul li:last-child,.article-left-btn-group ul li:nth-child(4),.moder-group-list ul li:last-child,.hot-article ul li:last-child,.topic-message-wrap .message-box:last-child,.acnt-item-content,.moder-story-list ul li:last-child,.zt-article ul li:last-child {
 border:none;
 }

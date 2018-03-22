@@ -167,7 +167,10 @@
 									</ul>
 								</div>
 								<div class="author-info">
-									<div class="author-face"><img src="https://img.huxiucdn.com/auth/data/avatar/001/68/30/86_1496144520.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></div>
+									<div class="author-face">
+										<img :src="`${comment.userInfo.userImageUrl}`" :onerror="defaultAvatar">
+										<!-- <img src="https://img.huxiucdn.com/auth/data/avatar/001/68/30/86_1496144520.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"> -->
+									</div>
 									<span class="author-name">
 										<a href="#">{{comment.userInfo.nickname}}</a>
 										<a href="#" target="_blank"></a>
@@ -184,7 +187,12 @@
 									<!-- 子评论 -->
 									<div class="dl-user del-pl108924"  v-for="(subComment, subIndex) in comment.subCommentList">
 										<ul>
-											<li><a href="#" target="_blank"><img src="https://img.huxiucdn.com/auth/data/avatar/3.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a></li>
+											<li>
+												<a href="#" target="_blank">
+													<img :src="`${subComment.userInfo.userImageUrl}`" :onerror="defaultAvatar">
+													<!-- <img src="https://img.huxiucdn.com/auth/data/avatar/3.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"> -->
+												</a>
+											</li>
 										</ul>
 										<div class="one-pl-content">
 											<div class="pull-right time">{{subComment.createTime | formatDateDiff}}</div>
@@ -341,6 +349,7 @@ export default {
 			userMail: "",
 			userGroupId: 1
 		},
+		defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
 		infoId:"",
 		isLogined: false,
 		isLoginShow: false,
@@ -436,6 +445,7 @@ export default {
 			})
 		},
 		registerConfirm () {
+         this.userInfo.userGroupId = 1
 			let param = this.userInfo
 			requestRegister(param).then(res => {
 					console.log(res)

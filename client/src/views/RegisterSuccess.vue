@@ -1,5 +1,5 @@
 <template>
-  <section>{{msg}}</section>
+  <section><h1 style="text-align:center;font-size:22px;">{{msg}}</h1></section>
 </template>
 <script>
 import {activate} from '../api/api.js'

@@ -26,28 +26,35 @@
             <div class="msgAlert" :class="{'active': isMsgAlert}">
                 <p class="msgAlert-text">{{isMsgAlertText}}</p>
             </div>
-            <div class="mod-b mod-art clearfix" v-for="info in infoList">
+            <div class="mod-b mod-art clearfix" v-for="(info,index) in displayInfoList" v-if="!info.isRemove">
                 <div class="mod-angle">热</div>
                         <!--栏目链接-->
                 <div class="mod-thumb pull-left ">
-                    <a class="transition" :title="info.title" href="/article/235337.html" target="_blank">
+                    <router-link class="transition" :title="info.title" :to="`article/${info.infoId}`">
                         <img class="lazy" :src="`${info.infoImage.image}`" :onerror="defaultImg" style="display: inline;">
-                    </a>
+                    </router-link>
                 </div>
+                <div class="column-link-box not-interest" @click="notInterest(index)">
+                 	<!-- <a href="#" class="column-link" target="_blank"> -->
+                         不感兴趣
+                         <i class="icon-not-interest" style="background-size: 15px 15px;"></i>
+                     <!-- </a> -->
+                 </div>
                 <div class="mob-ctt channel-list-yh">
                     <h2>
                         <a href="/article/235337.html" class="transition msubstr-row2" target="_blank">{{info.title}}</a>
                     </h2>
                     <div class="mob-author">
                         <div class="author-face">
-                            <a href="/member/1770148.html" target="_blank">
-                            <img :src="`${info.infoImage.image}`" :onerror="defaultImg"></a>
+                            <router-link :to="`article/${info.infoId}`">
+                            <img :src="`${info.infoImage.image}`" :onerror="defaultImg">
+                            </router-link>
                         </div>
-                        <a href="/member/1770148.html" target="_blank">
+                        <router-link :to="`article/${info.infoId}`">
                             <span class="author-name">{{info.author}}</span>
-                        </a>
+                        </router-link>
                         <a href="/vip" target="_blank"></a>
-                        <span class="time">4天前</span>
+                        <span class="time">{{info.publishDate|formatDateDiff}}</span>
                         <i class="icon icon-cmt"></i><em>10</em>
                         <i class="icon icon-fvr"></i><em>{{info.likes}}</em>
                     </div>
@@ -57,7 +64,7 @@
             </div>
         </div>
 
-            <div class="get-mod-more js-get-channel-more-list transition" data-url="/channel/ajaxGetMore" data-cur_page="1" data-catid="103" data-last_dateline="">
+            <div class="get-mod-more js-get-channel-more-list transition" @click="loadMore()">
                 点击加载更多
             </div>
                 <!--底部通栏广告-->
@@ -170,7 +177,7 @@
             </div>
                 <div class="placeholder"></div>
             <!--右侧热文部分-->
-        <div class="wrap-right pull-right">
+        <!-- <div class="wrap-right pull-right">
             <div class="box-moder hot-article">
     <h3>电商消费-热文</h3>
     <span class="span-mark"></span>
@@ -258,7 +265,7 @@
             </ul>
 </div>
 
-        </div>
+        </div> -->
         <div class="placeholder"></div>
     </div>
 
@@ -293,11 +300,21 @@ export default {
             isMsgAlertText: '',
             defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
             infoList: [],
+            displayInfoList: [],
             page: 1
         }
     },
     components:{
         VHeader,VFooter
+    },
+    watch: {  
+        '$route' (to, from) {  
+            // 如果type改变
+            if(to.params.typeId !== from.params.typeId){
+                this.$router.go(0)
+            } 
+            console.log(to,from)
+        }  
     },
     mounted(){
         let token = window.localStorage.getItem("token")
@@ -320,7 +337,19 @@ export default {
         })
         pushInfoByTypeId(this.typeId).then(res=>{
             if(res.status === 1){
+                for(let item of res.result){
+                    item.isRemove = false
+                }
                 this.infoList = res.result
+                let infoLength = this.infoList.length
+                if(infoLength <= 10){
+                    this.displayInfoList = this.infoList
+                }else{
+                    for(let i=0; i<10;i++){
+                        this.displayInfoList[i] = this.infoList[i]
+                    }
+                    this.infoList.splice(0,10)
+                }
                 this.isMsgAlert = false
                 this.isMsgAlertText = `为您推荐了${this.infoList.length}条文章`
                 setTimeout(()=>{
@@ -365,6 +394,7 @@ export default {
 			})
 		},
         registerConfirm () {
+            this.userInfo.userGroupId = 1
             let param = this.userInfo
             requestRegister(param).then(res => {
                 console.log(res)
@@ -387,7 +417,28 @@ export default {
                 this.isSearchShow = true
             }    
         },
-        
+        notInterest(index){
+            if(!this.isLogined){
+				this.showSuccessMsg({message: "此操作需要登录"});
+				return
+			}
+            this.displayInfoList[index].isRemove = true
+            this.showSuccessMsg({title:"成功",message:"将减少推荐类似内容"})
+        },
+        loadMore(){
+            let infoLength = this.infoList.length
+            if(infoLength <= 10){
+                this.displayInfoList = this.displayInfoList.concat(this.infoList)
+                this.infoList.splice(0,infoLength)
+                this.showInfoMsg({title:"信息",message:"休息一下吧,暂时没有更多资讯了"})
+            }else{
+                let length = this.displayInfoList.length
+                for(let i=0; i<10;i++){
+                    this.displayInfoList.push( this.infoList[i])
+                }
+                this.infoList.splice(0,10)
+            }
+        }
     },
     //通知插件
     notifications: {

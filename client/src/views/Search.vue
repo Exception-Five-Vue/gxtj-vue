@@ -12,6 +12,7 @@
     @registerConfirm="registerConfirm"
     @logout="logout"
     @handleSearch="handleSearch"
+    @requestSearch="requestSearch"
     ></VHeader>
 <div class="placeholder-height"></div>
 <div class="container per_center_body" id="per_center">
@@ -85,6 +86,10 @@ export default {
         })
         this.isLogined = true
     }
+    let p = this.$route.params.searchContent
+    if(p!=undefined && p!=""){
+        this.searchContent = p
+    }
     this.init()
   },
   methods: {
@@ -123,6 +128,7 @@ export default {
 			})
 		},
 		registerConfirm () {
+            this.userInfo.userGroupId = 1
 			let param = this.userInfo
 			requestRegister(param).then(res => {
 				console.log(res)
@@ -143,17 +149,11 @@ export default {
                 this.isSearchShow = true
             }    
         },
-        // requestSearch(...data){
-        //     this.searchContent = data[0]
-        //     console.log(this.searchContent+"dasdasdas")
-        //     console.log(this.$route.params)
-        //     this.init()
-        // },
+        requestSearch(...data){
+            this.searchContent = data[0]
+            this.init()
+        },
         init(){
-            let p = this.$route.params.searchContent
-            if(p!=undefined && p!=""){
-                this.searchContent = p
-            }
             let param = new FormData()
             param.append("searchContent", this.searchContent)
             getInfoBySearchBar(param).then(res=>{

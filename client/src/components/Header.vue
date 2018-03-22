@@ -238,13 +238,14 @@ export default {
         },
         requestSearch(){
             this.$emit('handleSearch', 0)
-            this.$router.push({name:'search',params: { searchContent: this.searchContent }})
+            this.$emit('requestSearch', this.searchContent)
+            this.$router.push({name:'search',params: { searchContent: this.searchContent}})
         },
         flush(){
             this.$router.push({name:'home'})
         },
-        goToType(id){
-            this.$router.push({path:`/type/${id}`})
+        goToType(){
+            this.$router.go(0)
         }
     }
 }

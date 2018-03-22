@@ -17,6 +17,7 @@
     "vue": "^2.5.2",
     "vue-cropper": "^0.2.9",
     "vue-meta": "^1.4.3",
+    "vue-modal-dialogs": "^2.0.0",
     "vue-notifications": "^0.9.0",
     "vue-router": "^3.0.1",
     "vue-snotify": "^3.0.4",
