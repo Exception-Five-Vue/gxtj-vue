@@ -22,8 +22,8 @@
                 <img :src="`${userInfo.userImageUrl}`" :onerror="defaultAvatar">
             </div>
             <div class="user-name">{{userInfo.nickname}}<a href="#" target="_blank"><i class="i-vip icon-vip" title="Oreo黑卡会员"></i></a></div>
-            <div class="user-one">产品老司机</div>
-                 <div class="user-one user-auth">Oreo认证作者<i class="i-icon icon-auth3" title="Oreo认证作者"></i></div>
+            <!-- <div class="user-one">产品老司机</div> -->
+                 <div class="user-one user-auth">Oreo用户<i class="i-icon icon-auth3" title="Oreo认证作者"></i></div>
                  <a href="javascript:" class="btn btn-messages js-login" uid="1373658" name="判官">给TA发私信</a>
                  <div class="admin-btn-warp"></div>
         	</div>
@@ -68,8 +68,8 @@
                 <li class="active" onMouseDown=Tabs1(this,0);><a href="#menu">最近阅读</a></li>
                 <li class="" onMouseDown=Tabs1(this,1);><a href="#menu">TA的评论</a></li>
                 <li class="" onMouseDown=Tabs1(this,2);><a href="#menu">TA的收藏</a></li>
-                <li class="" onMouseDown=Tabs1(this,3);><a href="#menu">TA的关注</a></li>
-                <li class="" onMouseDown=Tabs1(this,4);><a href="#menu" >TA的项目</a></li>
+                <!-- <li class="" onMouseDown=Tabs1(this,3);><a href="#menu">TA的关注</a></li> -->
+                <!-- <li class="" onMouseDown=Tabs1(this,4);><a href="#menu" >TA的项目</a></li> -->
             </ul>
         </div>
 		<div class="user-content-warp" id=myTabs1_Content0>
@@ -80,7 +80,7 @@
                     </a>
                     <div class="mob-ctt">
                             <h3><a href="/article/197348.html?f=member_article" class="transition" target="_blank">{{info.title}}</a></h3>
-                            <div class="mob-author"><span class="time">2017-05-28</span></div>
+                            <div class="mob-author"><span class="time">{{info.publishDate | formatDate}}</span></div>
                             <div class="mob-sub">{{info.description}}</div>
                     </div>
                 </div>          
@@ -264,6 +264,8 @@ import {getUserInfoById,requestLogin, requestRegister,getInfoByDate, getLogInfos
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
+import {formatDate} from '../utils/date.js';
+
 export default {
     data(){
         return{
@@ -402,6 +404,12 @@ export default {
             }]
         }
     },
+    filters: {
+		formatDate(time) {
+			var date = new Date(time);
+			return formatDate(date, "yyyy-MM-dd");
+		}
+	}
 }
 </script>
 

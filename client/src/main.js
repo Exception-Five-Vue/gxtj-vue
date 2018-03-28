@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import store from './store.js'
 import router from './router'
 import VueMeta from 'vue-meta'
 import VueNotifications from 'vue-notifications'
@@ -28,6 +29,7 @@ Vue.use(VueNotifications, options)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

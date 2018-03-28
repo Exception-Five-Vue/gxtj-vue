@@ -27,7 +27,7 @@
                 <p class="msgAlert-text">{{isMsgAlertText}}</p>
             </div>
             <div class="mod-b mod-art clearfix" v-for="(info,index) in displayInfoList" v-if="!info.isRemove">
-                <div class="mod-angle">热</div>
+                <div class="mod-angle" v-show="info.reads>0">热</div>
                         <!--栏目链接-->
                 <div class="mod-thumb pull-left ">
                     <router-link class="transition" :title="info.title" :to="`article/${info.infoId}`">
@@ -42,11 +42,11 @@
                  </div>
                 <div class="mob-ctt channel-list-yh">
                     <h2>
-                        <a href="/article/235337.html" class="transition msubstr-row2" target="_blank">{{info.title}}</a>
+                        <router-link :to="`/article/${info.infoId}`" class="transition msubstr-row2">{{info.title}}</router-link>
                     </h2>
                     <div class="mob-author">
                         <div class="author-face">
-                            <router-link :to="`article/${info.infoId}`">
+                            <router-link :to="`/article/${info.infoId}`">
                             <img :src="`${info.infoImage.image}`" :onerror="defaultImg">
                             </router-link>
                         </div>
@@ -55,7 +55,7 @@
                         </router-link>
                         <a href="/vip" target="_blank"></a>
                         <span class="time">{{info.publishDate|formatDateDiff}}</span>
-                        <i class="icon icon-cmt"></i><em>10</em>
+                        <i class="icon icon-cmt"></i><em>0</em>
                         <i class="icon icon-fvr"></i><em>{{info.likes}}</em>
                     </div>
 
@@ -74,11 +74,11 @@
     <div class="wrap-right pull-right">
         <!--公共右侧部分-->
         
-                    <div class="box-moder hot-tag">
+            <!-- <div class="box-moder hot-tag">
                 <h3>专题</h3>
                 <span class="span-mark"></span>
                 <div class="zt-article">
-                                            <div class="zt-article-img">
+                        <div class="zt-article-img">
                             <a href="/special/2800.html" target="_blank" title="霍金时间简史">
                                 <img src="https://img.huxiucdn.com/special/201803/14/122154736347.jpg">
                             </a>
@@ -125,22 +125,20 @@
             </div>
         
         
-                    <div class="placeholder"></div>
+            <div class="placeholder"></div> -->
             <div class="box-moder hot-tag">
-                <h3>频道</h3>
-                <span class="span-mark"></span>
-                <div class="search-history search-right search-hot">
-                    <ul>
-                                                    <li class="transition"><a href="/channel/112.html" target="_blank">社交通讯</a></li>
-                                                    <li class="transition"><a href="/channel/4.html" target="_blank">生活腔调</a></li>
-                                                    <li class="transition"><a href="/channel/21.html" target="_blank">车与出行</a></li>
-                                                    <li class="transition"><a href="/channel/22.html" target="_blank">娱乐淘金</a></li>
-                                                    <li class="transition"><a href="/channel/102.html" target="_blank">金融地产</a></li>
-                                                    <li class="transition"><a href="/channel/104.html" target="_blank">人工智能</a></li>
-                                            </ul>
-                </div>
-            </div>
-                            <div class="placeholder"></div>
+        		<h3>热门标签</h3>
+        		<span class="pull-right project-more">
+					  <!-- <a href="#" class="transition" target="_blank">全部</a> -->
+				</span>
+        		<span class="span-mark"></span>
+        		<div class="search-history search-hot">
+            		<ul>
+                   	<li class="transition" v-for="item in hotKeyWords"><a href="#" target="_blank">{{item}}</a></li>
+            		</ul>
+        		</div>
+    		</div>
+            <!-- <div class="placeholder"></div>
             <div class="box-moder hot-tag">
                 <h3>专栏</h3>
                 <span class="span-mark"></span>
@@ -174,7 +172,7 @@
                         </a>
                     </li>
                                 </ul>
-            </div>
+            </div> -->
                 <div class="placeholder"></div>
             <!--右侧热文部分-->
         <!-- <div class="wrap-right pull-right">
@@ -271,6 +269,19 @@
 
 </div>
    <VFooter></VFooter>
+   <div class="push-wrapper" :class="{'fadeIn':isReceiveInfo ,'fadeOut': !isReceiveInfo}"   v-if="receiveInfo!=null">
+        <router-link :to="`/article/${receiveInfo.infoId}`">
+            <div class="title">
+                <p>{{receiveInfo.title}}</p>
+            </div>
+            <div class="content">
+                <p>{{receiveInfo.description}}</p>
+                <!-- 推荐的资讯正文推荐的资讯正文推荐的资讯正文推荐的资讯正文
+                推荐的资讯正文推荐的资讯正文推荐的资讯正文推荐的资讯正文 -->
+            </div>
+        </router-link>
+        <i class="icon icon-close" @click="closePushInfo"></i>
+    </div>
   </section>
 </template>
 <script>
@@ -279,8 +290,10 @@ import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
 import {GetDateDiff} from '../utils/date.js'
+import {mapActions, mapGetters} from 'vuex'
+
 export default {
-       data () {
+    data () {
         return {
             typeId:"",
             typeName:"",
@@ -301,9 +314,15 @@ export default {
             defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
             infoList: [],
             displayInfoList: [],
-            page: 1
+            receiveInfo: null,
+            isReceiveInfo: false,
+            page: 1,
+            hotKeyWords: ['李彦宏', '电影','人工智能','自动','女性','社会','退休','SUV','收购','香港','中国','微博']
+
         }
     },
+    computed:mapGetters(['getReceiveInfoList']),
+
     components:{
         VHeader,VFooter
     },
@@ -344,6 +363,7 @@ export default {
                 let infoLength = this.infoList.length
                 if(infoLength <= 10){
                     this.displayInfoList = this.infoList
+                    this.infoList = []
                 }else{
                     for(let i=0; i<10;i++){
                         this.displayInfoList[i] = this.infoList[i]
@@ -351,7 +371,7 @@ export default {
                     this.infoList.splice(0,10)
                 }
                 this.isMsgAlert = false
-                this.isMsgAlertText = `为您推荐了${this.infoList.length}条文章`
+                this.isMsgAlertText = `为您推荐了${this.displayInfoList.length}条文章`
                 setTimeout(()=>{
                     this.isMsgAlert = true
                 },3000)
@@ -360,6 +380,63 @@ export default {
         })
     },
     methods:{
+        closePushInfo(){
+			this.isReceiveInfo = false
+		},
+        webSocketConnect(){
+            let token = window.localStorage.getItem("token")
+            let ws = null
+                if ('WebSocket' in window){
+                    ws = new WebSocket("ws://localhost:8000/socketServer/"+token);    
+                }    
+                else if ('MozWebSocket' in window){
+                    ws = new MozWebSocket("ws://localhost:8000/socketServer/"+token);    
+                }
+                else{
+                    alert("该浏览器不支持websocket");    
+                }
+                let _this = this
+                ws.onmessage = function(evt) {   
+                    console.log(this)
+                    // this.receiveInfoId = evt.data 
+                    // _this.$store.commit('change', evt.data )
+                    let infoId = null;
+                    let index = null;
+                    for(let i in _this.getReceiveInfoList){
+                        if(!_this.getReceiveInfoList[i].hasPushed){
+                            infoId = _this.getReceiveInfoList[i].receiveInfoId
+                            index = i
+                            break
+                        }
+                    }
+                    console.log("id:"+infoId)
+                    if(infoId != null){
+                        console.log("id:"+infoId)
+                        setTimeout(()=>{
+                            getInfoByInfoId(infoId).then(res=>{
+                                if(res.status === 1){
+                                    console.log(res.result)
+                                    _this.receiveInfo = res.result
+                                    //为了有动画效果
+                                    setTimeout(()=>{
+                                        _this.isReceiveInfo = true
+                                    },200)
+                                    _this.getReceiveInfoList[index].hasPushed = true
+                                }
+                            })
+                        },5000)
+                    }
+                };
+                    
+                ws.onclose = function(evt) {    
+                    // alert("连接中断");    
+                };    
+                    
+                ws.onopen = function(evt) {    
+                    alert("连接成功");    
+                };  
+            
+        },
         handleForm(...data) {
             console.log(data)
             console.log("dsadsadsa")
