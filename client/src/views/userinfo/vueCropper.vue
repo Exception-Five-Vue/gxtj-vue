@@ -31,11 +31,11 @@
 					<button @click="startCrop" v-if="!crap" class="btn">开始裁剪</button>
 					<button @click="stopCrop" v-else class="btn">停止裁剪</button>
 					<button @click="submitAvatar" class="btn">确认上传</button>
-					<button @click="clearCrop" class="btn">clear</button>
-					<button @click="finish('base64')" class="btn">preview(base64)</button>
+					<button @click="clearCrop" class="btn">清除</button>
+					<!-- <button @click="finish('base64')" class="btn">preview(base64)</button>
 					<button @click="finish('blob')" class="btn">preview(blob)</button>
 					<a @click="down('base64')" class="btn">download(base64)</a>
-					<a @click="down('blob')" class="btn">download(blob)</a>
+					<a @click="down('blob')" class="btn">download(blob)</a> -->
 				</div>
 				<div class="show-preview" :style="{'width': previews.w + 'px', 'height': previews.h + 'px',  'overflow': 'hidden', 'margin': '5px'}">
 					<div :style="previews.div">

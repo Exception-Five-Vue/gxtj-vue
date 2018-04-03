@@ -113,37 +113,34 @@ export default {
     
     getUserMod().then((res)=>{
         console.log(res)
-        //娱乐  政治  运动  商业  技术  汽车 军事  旅行   生活  其他 
+//娱乐','法律','体育','财经','科技','互联网','政治','生活', '国际
         let userMod = res.result
         this.echartsData.push({
             value:userMod.entertainment, name:'娱乐'
         })
         this.echartsData.push({
-            value:userMod.politics, name:'政治'
+            value:userMod.politics, name:'法律'
         })
         this.echartsData.push({
-            value:userMod.sports, name:'运动',
+            value:userMod.sports, name:'体育',
         })
         this.echartsData.push({
-            value:userMod.business, name:'商业',
+            value:userMod.business, name:'财经',
         })
         this.echartsData.push({
-            value:userMod.technology, name:'技术',
+            value:userMod.technology, name:'科技',
         })
         this.echartsData.push({
-            value:userMod.car, name:'汽车',
+            value:userMod.car, name:'互联网',
         })
         this.echartsData.push({
-            value:userMod.military , name:'军事',
+            value:userMod.military , name:'政治',
         })
         this.echartsData.push({
-            value:userMod.travel, name:'旅行',
+            value:userMod.travel, name:'生活',
         })
         this.echartsData.push({
-            value:userMod.life, name:'生活',
-        })
-        this.echartsData.push({
-            value:userMod.other, name:'其他',
+            value:userMod.life, name:'国际',
         })
         this.initChart();
     })
@@ -226,7 +223,7 @@ export default {
         legend: {
             x : 'center',
             y : 'bottom',
-            data:['娱乐','政治','运动','商业','技术','汽车','军事','旅行', '生活', '其他']
+            data:['娱乐','法律','体育','财经','科技','互联网','政治','生活', '国际']
         },
         toolbox: {
             show : true,

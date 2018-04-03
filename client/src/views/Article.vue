@@ -30,10 +30,10 @@
                         <a class="js-weixin" data-f="pc-friends-article"><i class="icon icon-article icon-article-pyq" ></i></a>
                     </li>
                         <!--普通文章分享支付宝 -->
-                    <li class="zhifubao">
+                    <!-- <li class="zhifubao">
                         <div class="zhifubao-Qr-code"></div>
                         <a class="js-zhifubao" data-f="pc_alipay_article"><i class="icon icon-article icon-article-zfb" ></i></a>
-                    </li>
+                    </li> -->
                         <!--普通文章分享qq空间 -->
                     <li><a href=""><i class="icon icon-article icon-article-qzone js-qzone js-share-article" data-location="article" data-f="pc-qzone-article" aid="197460"></i></a></li>
                     <li><a class="js-article-pl-anchor"><i class="icon icon-article icon-article-pl">评论</i></a></li>
@@ -50,7 +50,7 @@
                     <span class="article-share pull-left">阅读量{{information.reads}}</span>
                     <span class="article-pl pull-left">点赞{{information.likes}}</span>
 					<span class="article-pl pull-left" style="margin-left:14px">评论{{commentCount}}</span>
-                    <a href="#" class="column-link" target="_blank">创业维艰</a> <i></i>
+                    <!-- <a href="#" class="column-link" target="_blank">创业维艰</a> <i></i> -->
                 </div>                     
             </div>
 <!--管理员按钮-->
@@ -63,14 +63,14 @@
                  <!-- <p>有些人和企业的厉害之处，在于从一个看似成熟、红海的领域，硬生生拓展出一片蓝海市场来，而且生意做到风生水起。</p><p><br/></p><p>而这种闯出一片新天地的方法，最常见的一种，就是将原有的产品或服务模式中的某个元素，推向极致，拓展出新的用户场景和产品价值，自然就拓展出了新的市场。</p><p><br/></p><p>今天来分析三个例子，来看看这种"单一元素推向极致"的手段有多厉害。</p><p><br/></p><p><strong>第一个例子，是前段时间非常火爆的电话亭式KTV。</strong></p><p><br/></p><p>我不知道现在还有多少人经常去KTV唱歌。我能看到的是，在一线城市，传统的量贩式KTV市场一再萎缩，以钱柜、麦乐迪为代表的老企业日渐衰败，新的主打小户型的唱吧麦颂半死不活。长盛不衰此起彼伏的KTV也有，但那是俗称商K的夜总会式KTV，你懂的。</p><p><br/></p><p>究其原因，现在娱乐的个性化和小群体化趋势日益明显，以前那种成群结队去唱歌，还要忍受别人五音不全的唱腔的娱乐形式，显得不够与时俱进。</p><p><br/></p><p>但是，朋友情侣三两出行，还是有唱歌娱乐的需求的。电话亭式KTV应运而生。</p><p><br/></p><p>电话亭式KTV，把时间和空间两个元素推向极致。仅容纳两到三个人的私密空间，少至一首歌或者一刻钟的欢唱时间，充分利用碎片化时间和空间，让唱歌这件事不那么仪式感和处心积虑，随时兴起就可以来一发，多么愉快。何况，曲库、音响效果并不亚于传统的KTV，甚至还有所超越。</p>                -->
 				<div v-if="information.infoContent!=null" v-html="information.infoContent.content"></div>
                  <div class="neirong-shouquan">
-                      <span class="c2">*文章为作者独立观点，不代表Oreo网立场<br></span>
-                      <span>本文由 <a href="#" target="_blank">判官</a> 授权 <a href="/">Oreo网</a> 发表，并经Oreo网编辑。转载此文请于文首标明作者姓名，保持文章完整性（包括Oreo注及其余作者身份信息），并请附上出处</span>
+                      <span class="c2">*文章为作者独立观点，不代表Oreo立场<br></span>
+                      <span>本文由Oreo</a> 发表。转载此文请于文首标明作者姓名，保持文章完整性（包括Oreo注及其余作者身份信息），并请附上出处</span>
                       <br />
-                      <span><b>未按照规范转载者，Oreo保留追究相应责任的权利</b></span>
+                      <!-- <span><b>未按照规范转载者，Oreo保留追究相应责任的权利</b></span> -->
                  </div>
-                 <div class="neirong-shouquan-public">
+                 <!-- <div class="neirong-shouquan-public">
                       <span><b>未来面前，你我还都是孩子，还不去下载 <a href="#" target="_blank">OreoApp </a>猛嗅创新！</b></span>
-                 </div>
+                 </div> -->
             </div>
 			<div class="Qr-code">
                                                     
@@ -96,9 +96,7 @@
              <div class="article-manage-bar article-bottom-manage-bar" id="article-bottom-manage-bar197460"></div>
 			 <div class="tag-box ">
                   <ul class="transition">
-                      <a href="#" target="_blank"><li class="transition">投稿</li></a>
-                      <a href="#" target="_blank"><li class="transition">创业</li></a>
-                      <a href="#" target="_blank"><li class="transition">商业模式</li></a>
+                      <a href="#" target="_blank" v-for="(item,index) in infoKeyWord" v-if="index<=2"><li class="transition">{{item}}</li></a>
                    </ul>
               </div>
               <!--公共评论-->
@@ -246,38 +244,31 @@
         		<a href="#" target="_blank"><img src="https://img.huxiucdn.com/auth/data/avatar/001/37/36/58_avatar_big.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a>
     		</div>
     		<div class="author-name">
-        		<a href="#" target="_blank">判官</a>
+        		<a href="#" target="_blank">{{information.author}}</a>
         		<a href="#" target="_blank"><i class="i-vip icon-vip" title="Oreo黑卡会员"></i></a>
         		<i class="i-icon icon-auth3" title="Oreo认证作者"></i>    
         	</div>
-    		<div class="author-one">产品老司机</div>
-    		<div class="author-one">产品个体户</div>
-    		<div class="author-article-pl">
+    		<!-- <div class="author-one">产品老司机</div>
+    		<div class="author-one">产品个体户</div> -->
+    		<!-- <div class="author-article-pl">
         		<ul>
             		<li><a href="#" target="_blank">32篇文章</a></li>
         		</ul>
-    		</div>
+    		</div> -->
         	<div class="author-next-article">
-        		<div class="author-one c2">最近文章</div>
-        			<a href="#" target="_blank">冷眼看快手、陌陌们的"短视频社交"</a>
+        		<!-- <div class="author-one c2">最近文章</div> -->
+        			<!-- <a href="#" target="_blank">冷眼看快手、陌陌们的"短视频社交"</a> -->
     			</div>
         	</div>
     		<div class="box-moder hot-tag">
         		<h3>热门标签</h3>
-        		<span class="pull-right project-more"><a href="#" class="transition" target="_blank">全部</a></span>
+        		<span class="pull-right project-more">
+					  <!-- <a href="#" class="transition" target="_blank">全部</a> -->
+				</span>
         		<span class="span-mark"></span>
         		<div class="search-history search-hot">
             		<ul>
-                   	 <li class="transition"><a href="#" target="_blank">阿里巴巴</a></li>
-                    	<li class="transition"><a href="#" target="_blank">投稿</a></li>
-                    	<li class="transition"><a href="#" target="_blank">创业</a></li>
-                    	<li class="transition"><a href="#" target="_blank">头条</a></li>
-                    	<li class="transition"><a href="#" target="_blank">马云</a></li>
-                    	<li class="transition"><a href="#" target="_blank">大数据</a></li>
-                    	<li class="transition"><a href="#" target="_blank">移动互联网</a></li>
-                    	<li class="transition"><a href="#" target="_blank">电子商务</a></li>
-                    	<li class="transition"><a href="#" target="_blank">微信</a></li>
-                    	<li class="transition"><a href="#" target="_blank">Facebook</a></li>
+                   	<li class="transition" v-for="item in hotKeyWords"><a href="#" target="_blank">{{item}}</a></li>
             		</ul>
         		</div>
     		</div>
@@ -286,37 +277,16 @@
         		<h3>热文</h3>
         		<span class="span-mark"></span>
         		<ul>
-                    <li>
-                    	<div class="hot-article-img">
-                        	<a href="#" target="_blank"><img src="https://img.huxiucdn.com/article/cover/201706/04/105715329877.jpg?imageView2/1/w/280/h/210/|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a>
-                    	</div>
-                    	<a href="#" class="transition" target="_blank">3年了，我们的内容消费发生了什么变化？</a>
-                	</li>
-                    <li>
-                    	<div class="hot-article-img">
-                        	<a href="#" target="_blank"><img src="https://img.huxiucdn.com/article/cover/201706/04/191327154498.jpg?imageView2/1/w/280/h/210/|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a>
-                    	</div>
-                    	<a href="#" class="transition" target="_blank">顺丰，菜鸟，令狐冲，岳不群</a>
-               		</li>
-                    <li>
-                    	<div class="hot-article-img">
-                        	<a href="#" target="_blank"><img src="https://img.huxiucdn.com/article/cover/201706/04/105715329877.jpg?imageView2/1/w/280/h/210/|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a>
-                    	</div>
-                    	<a href="#" class="transition" target="_blank">3年了，我们的内容消费发生了什么变化？</a>
-                	</li>
-                    <li>
-                    	<div class="hot-article-img">
-                        	<a href="#" target="_blank"><img src="https://img.huxiucdn.com/article/cover/201706/04/191327154498.jpg?imageView2/1/w/280/h/210/|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a>
-                    	</div>
-                    	<a href="#" class="transition" target="_blank">顺丰，菜鸟，令狐冲，岳不群</a>
-               		</li>
-                    <li>
-                    	<div class="hot-article-img">
-                        	<a href="#" target="_blank"><img src="https://img.huxiucdn.com/article/cover/201706/04/105715329877.jpg?imageView2/1/w/280/h/210/|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a>
-                    	</div>
-                    	<a href="#" class="transition" target="_blank">3年了，我们的内容消费发生了什么变化？</a>
-                	</li>
-                </ul>
+					<li v-for="index in 6">
+						<div class="hot-article-img">
+								<a href="#" target="_blank">
+									<img :src="`${hotInfoList[index].infoImage.image}`" :onerror="defaultImg">
+								</a>
+						
+						</div>
+						<a href="#" class="transition" target="_blank">{{hotInfoList[index].title}}</a>
+					</li>
+				</ul>
     		</div>
         </div>
     </div>
@@ -325,92 +295,187 @@
 </div>
 
 <VFooter></VFooter>
+	<div class="push-wrapper" :class="{'fadeIn':isReceiveInfo ,'fadeOut': !isReceiveInfo}"   v-if="receiveInfo!=null">
+        <router-link :to="`/article/${receiveInfo.infoId}`">
+            <div class="title">
+                <p>{{receiveInfo.title}}</p>
+            </div>
+            <div class="content">
+                <p>{{receiveInfo.description}}</p>
+                <!-- 推荐的资讯正文推荐的资讯正文推荐的资讯正文推荐的资讯正文
+                推荐的资讯正文推荐的资讯正文推荐的资讯正文推荐的资讯正文 -->
+            </div>
+        </router-link>
+        <i class="icon icon-close" @click="closePushInfo"></i>
+    </div>
   </section>
 </template>
 
 <script>
-import {getInfoByInfoId, getPushInfo,getCommentsByInfoId,addComment,updateComment, updateInfo,getUserInfoById} from '../api/api.js'
+import {getInfoByInfoId, getPushInfo,getInfoByDate,getCommentsByInfoId,addComment,updateComment, updateInfo,getUserInfoById} from '../api/api.js'
 import {GetDateDiff,formatDate} from '../utils/date.js';
 import {requestLogin, requestRegister} from '../api/api.js'
 import VFooter from '@/components/Footer.vue'
-
 import VHeader from '@/components/Header.vue'
-
 import VueNotifications from 'vue-notifications'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   data(){
-	  return{
-		userInfo: {
-			userId:1,
-			username: "",
-			password: "",
-			nickname: "",
-			userMail: "",
-			userGroupId: 1
-		},
-		defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
-		infoId:"",
-		isLogined: false,
-		isLoginShow: false,
-		isRegisterShow: false,
-		isSearchShow: false,
-		information:{},
+	  	return{
+			userInfo: {
+				userId:1,
+				username: "",
+				password: "",
+				nickname: "",
+				userMail: "",
+				userGroupId: 1
+			},
+			defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
+			infoId:"",
+			isLogined: false,
+			isLoginShow: false,
+			isRegisterShow: false,
+			isSearchShow: false,
+			information:{},
+         defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
 
-		//已经点过赞
-		hasLike: false,
-		flag: false,
-		commentList: [],
-		commentCount: 0,
-		commentParam: {
-			content:""
+			//已经点过赞
+			hasLike: false,
+			flag: false,
+			commentList: [],
+			commentCount: 0,
+			commentParam: {
+				content:""
+			},
+			//接收到的文章 
+			receiveInfo: null,
+			isReceiveInfo: false,
+			page: 1,
+			hotInfoList: null,
+			hotKeyWords: ['李彦宏', '电影','人工智能','自动','女性','社会','退休','SUV','收购','香港','中国','微博'],
+			infoKeyWord: []
 		}
-	  }
-  },
-  components: {VHeader,VFooter},
-  mounted(){
-	let token = window.localStorage.getItem("token")
-	if(token!=null&&token!=""){
-		// this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-		this.userInfo.userId = window.localStorage.getItem("user");
-		getUserInfoById(this.userInfo.userId).then(res=>{
-				if(res.status === 1){
-					this.userInfo = res.result
-				}
-		})
-		this.isLogined = true
-	}
-	this.infoId  = this.$route.params.id
-	/* 绑定评论列表数据 */
-	this.initCommentList(this.infoId)
-	
-	getInfoByInfoId(this.infoId).then(res=>{
-		if(res.status === 1){
-			console.log(res)
-			this.information = res.result
-			let param = new FormData()
-			param.append("id",this.infoId)
-			// getPushInfo(param).then(res => {
-			// 	console.log(res)
-			// 	console.log("推送"+res.result.title)
-			// 	this.showTime(`<a href="http://localhost:8085/#/article/${res.result.id}">${res.result.description}</a><img src="https://mmbiz.qpic.cn/mmbiz_jpg/n9SYkDp4R65gpdLy7IJ1TGEHdib9zBF4KdYscAGLicDLibeY094DWNKib4jX2dyib0ibP6oiar5b6veW5dpOcALHQQniaA/640?wx_fmt=jpeg" width="100" height="100"></img>`)
-			// 	this.resetOptions()
-			// })
-			//阅读量+1
-			let param2 = {
-				id: this.information.id,
-				reads: ++this.information.reads
-			}
-			updateInfo(param2).then(res=>{
-				console.log(res)
+	},
+	components: {VHeader,VFooter},
+   computed:mapGetters(['getReceiveInfoList']),
+	mounted(){
+		let token = window.localStorage.getItem("token")
+		if(token!=null&&token!=""){
+			// this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+			this.userInfo.userId = window.localStorage.getItem("user");
+			getUserInfoById(this.userInfo.userId).then(res=>{
+					if(res.status === 1){
+						this.userInfo = res.result
+					}
 			})
-		}else{
-			// this.$router.push({path:'/404'})
+			this.isLogined = true
 		}
-	})
-  },
-  methods:{
-	  	/* header方法 */
+		this.infoId  = this.$route.params.id
+		console.log(this.infoId)
+		/* 绑定评论列表数据 */
+		this.initCommentList(this.infoId)
+		getInfoByDate(1).then(res=>{
+			if(res.status === 1){
+				console.log("文章:",res.result)
+				this.hotInfoList = res.result
+			}
+		})
+		getInfoByInfoId(this.infoId).then(res=>{
+			if(res.status === 1){
+				console.log(res)
+				this.information = res.result
+				this.infoKeyWord = this.information.keyword.split(",");
+
+				let param = new FormData()
+				param.append("id",this.infoId)
+				// getPushInfo(param).then(res => {
+				// 	console.log(res)
+				// 	console.log("推送"+res.result.title)
+				// 	this.showTime(`<a href="http://localhost:8085/#/article/${res.result.id}">${res.result.description}</a><img src="https://mmbiz.qpic.cn/mmbiz_jpg/n9SYkDp4R65gpdLy7IJ1TGEHdib9zBF4KdYscAGLicDLibeY094DWNKib4jX2dyib0ibP6oiar5b6veW5dpOcALHQQniaA/640?wx_fmt=jpeg" width="100" height="100"></img>`)
+				// 	this.resetOptions()
+				// })
+				//阅读量+1
+				let param2 = {
+					id: this.information.id,
+					reads: ++this.information.reads
+				}
+				updateInfo(param2).then(res=>{
+					console.log(res)
+				})
+			}else{
+				// this.$router.push({path:'/404'})
+			}
+		})
+		// console.log("dasdas:"+this.getReceiveInfoId)
+		// if(this.getReceiveInfoId != -1){
+		// 	setTimeout(()=>{
+		// 			getInfoByInfoId(this.getReceiveInfoId).then(res=>{
+		// 				if(res.status === 1){
+		// 					console.log("接收到的文章:"+res.result)
+		// 					this.receiveInfo = res.result
+		// 					this.isReceiveInfo = true
+		// 				}
+		// 			})
+		// 	},5000)
+		// }
+	},
+	methods:{
+		closePushInfo(){
+			this.isReceiveInfo = false
+		},
+        webSocketConnect(){
+            let token = window.localStorage.getItem("token")
+            let ws = null
+                if ('WebSocket' in window){
+                    ws = new WebSocket("ws://localhost:8000/socketServer/"+token);    
+                }    
+                else if ('MozWebSocket' in window){
+                    ws = new MozWebSocket("ws://localhost:8000/socketServer/"+token);    
+                }
+                else{
+                    alert("该浏览器不支持websocket");    
+                }
+                let _this = this
+                ws.onmessage = function(evt) {   
+                    console.log(this)
+                    // this.receiveInfoId = evt.data 
+                    // _this.$store.commit('change', evt.data )
+                    let infoId = null;
+                    let index = null;
+                    for(let i in _this.getReceiveInfoList){
+                        if(!_this.getReceiveInfoList[i].hasPushed){
+                            infoId = _this.getReceiveInfoList[i].receiveInfoId
+                            index = i
+                            break
+                        }
+                    }
+                    console.log("id:"+infoId)
+                    if(infoId != null){
+                        console.log("id:"+infoId)
+                        setTimeout(()=>{
+                            getInfoByInfoId(infoId).then(res=>{
+                                if(res.status === 1){
+                                    console.log(res.result)
+                                    _this.receiveInfo = res.result
+                                    _this.isReceiveInfo = true
+                                    _this.getReceiveInfoList[index].hasPushed = true
+                                }
+                            })
+                        },5000)
+                    }
+                };
+                    
+                ws.onclose = function(evt) {    
+                  //   alert("连接中断");    
+                };    
+                    
+                ws.onopen = function(evt) {    
+                  //   alert("连接成功");    
+                };  
+            
+        },
+			/* header方法 */
 	  	handleForm(...data) {
 			console.log(data)
 			console.log("dsadsadsa")
@@ -437,7 +502,8 @@ export default {
                             this.userInfo = res.result
                             this.showSuccessMsg({title:"成功",message:"登录成功"})
                         }
-                    })
+						  })
+						  this.webSocketConnect();
                     // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
 					}else if(res.data.status === -1){
 						this.showErrorMsg({title:"失败",message:"用户名不存在"})
@@ -559,6 +625,9 @@ export default {
 						this.initCommentList(this.infoId)
 						this.commentList[index].subCommentList[subIndex].isCommentClick = false
 						this.commentParam.content = ""
+						this.showSuccessMsg({title:"成功",message:"评论成功"})
+					}else{
+						this.showErrorMsg({title:"失败",message:"评论失败"})
 					}
 				})
 			}else if(flag ===1){
@@ -567,6 +636,9 @@ export default {
 						this.initCommentList(this.infoId)
 						this.commentList[index].isCommentClick = false
 						this.commentParam.content = ""
+						this.showSuccessMsg({title:"成功",message:"评论成功"})
+					}else{
+						this.showErrorMsg({title:"失败",message:"评论失败"})
 					}
 				})
 			}else if(flag === 2){
@@ -576,6 +648,9 @@ export default {
 					if(res.status === 1){
 						this.initCommentList(this.infoId)
 						this.commentParam.content = ""
+						this.showSuccessMsg({title:"成功",message:"评论成功"})
+					}else{
+						this.showErrorMsg({title:"失败",message:"评论失败"})
 					}
 				})
 			}

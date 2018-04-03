@@ -58,7 +58,7 @@
        </div>
        <div class="mod-info-flow"  v-if="displayInfoList != null">
             <div class="mod-b mod-art" v-for="(info,index) in displayInfoList" v-if="index>2 && !info.isRemove">
-            	 <div class="mod-angle">热</div>
+            	 <div class="mod-angle" v-show="info.reads>0">热</div>
                  <div class="mod-thumb ">
                        <a class="transition" :title="info.title" href="#" target="_blank">
 						  <img class="lazy" style="height:100%" v-if="info.infoImage!=null" :src="`${info.infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低">
@@ -99,7 +99,7 @@
 		<div id="moment"></div>
 		<div class="box-moder moder-story-list">
     		<h3>最近热评</h3>
-    		<span class="pull-right project-more story-more"><a href="#" class="transition index-24-right js-index-24-right" target="_blank">查看全部</a></span>
+    		<!-- <span class="pull-right project-more story-more"><a href="#" class="transition index-24-right js-index-24-right" target="_blank">查看全部</a></span> -->
     		<span class="span-mark"></span>
     		<div class="story-box-warp hour-box-warp">
         		<div class="nano">
@@ -143,9 +143,9 @@
 	</div>
 	<div class="placeholder"></div>
 <!--24小时部分结束1-->
-	<div class="ad-wrap">
+	<!-- <div class="ad-wrap">
     	<div class="ad-title">广告</div>
-    </div>
+    </div> -->
     <div class="placeholder"></div>
 <!--传言-->
 <!--传言部分开始-->
@@ -388,16 +388,31 @@
 </div>
 </div>
 <VFooter></VFooter>
+    <div class="push-wrapper" :class="{'fadeIn':isReceiveInfo ,'fadeOut': !isReceiveInfo}"   v-if="receiveInfo!=null">
+        <router-link :to="`/article/${receiveInfo.infoId}`">
+            <div class="title">
+                <p>{{receiveInfo.title}}</p>
+            </div>
+            <div class="content">
+                <p>{{receiveInfo.description}}</p>
+                <!-- 推荐的资讯正文推荐的资讯正文推荐的资讯正文推荐的资讯正文
+                推荐的资讯正文推荐的资讯正文推荐的资讯正文推荐的资讯正文 -->
+            </div>
+        </router-link>
+        <i class="icon icon-close" @click="closePushInfo"></i>
+    </div>
     </section>
 </template>
+
 <script>
-import {getAllType, getUserInfoById,requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo} from '../api/api.js'
+
+import {getAllType, getUserInfoById,requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo, getInfoByInfoId} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 
 import VueNotifications from 'vue-notifications'
 import {GetDateDiff} from '../utils/date.js'
-
+import {mapActions, mapGetters} from 'vuex'
 export default {
     data () {
         return {
@@ -422,11 +437,13 @@ export default {
             displayInfoList: null,
             logInfoList: [],
             hotCommentList: [],
+            receiveInfo: null,
+            isReceiveInfo: false,
             typeList: [],
             page: 1,
-            
         }
     },
+    computed:mapGetters(['getReceiveInfoList']),
     components:{
         VHeader,VFooter
     },
@@ -446,12 +463,16 @@ export default {
         getHotComments().then(res=>{
             if(res.status === 1){
                 this.hotCommentList = res.result
-                
             }
         })
-       
+        console.log(this.getReceiveInfoList)
+
     },
     methods: {
+        closePushInfo(){
+			this.isReceiveInfo = false
+		},
+        // ...mapActions(['add','decrease','oddAdd']),
         initData(){
             if(!this.isLogined){
                 getInfoByDate(this.page).then(res=>{
@@ -479,15 +500,16 @@ export default {
                     }
                 })
             }else{
-                getLogInfos().then(res=>{
-                    if(res.status === 1){
-                        this.logInfoList = res.result
+                // getLogInfos().then(res=>{
+                //     if(res.status === 1){
+                //         this.logInfoList = res.result
                         pushUserByLogInfo().then((res)=>{
                             if(res.status === 1){
                                 console.log("文章:",res.result)
                                 /* 设置文章为已读或未读 */
                                 let infos = res.result
                                 for(let info of infos){
+                                    info.isRemove = false
                                     info.isRead = false
                                     for(let log of this.logInfoList){
                                         if(log.infoId === info.infoId){
@@ -497,10 +519,10 @@ export default {
                                     }
                                 }
                                 console.log(infos)
+                                // for(let item of this.infoList){
+                                //     item.isRemove = false
+                                // }
                                 this.infoList = infos
-                                for(let item of this.infoList){
-                                    item.isRemove = false
-                                }
                                 let infoLength = this.infoList.length
                                 this.displayInfoList = []
                                 if(infoLength <= 10){
@@ -520,8 +542,8 @@ export default {
                             }
                             
                         })
-                    }
-                })
+                //     }
+                // })
             }
         },
         handleForm(...data) {
@@ -558,7 +580,7 @@ export default {
                     this.showErrorMsg({title:"失败",message:"用户名不存在"})
                 }
             })
-        },
+        },        
         registerConfirm () {
             this.userInfo.userGroupId = 1
             let param = this.userInfo
@@ -582,21 +604,47 @@ export default {
                 }
                 else{
                     alert("该浏览器不支持websocket");    
-                }    
-                    
-                    
-                ws.onmessage = function(evt) {    
-                    alert(evt.data);    
-                };    
+                }
+                let _this = this
+                ws.onmessage = function(evt) {   
+                    console.log(this)
+                    // this.receiveInfoId = evt.data 
+                    // _this.$store.commit('change', evt.data )
+                    let infoId = null;
+                    let index = null;
+                    for(let i in _this.getReceiveInfoList){
+                        if(!_this.getReceiveInfoList[i].hasPushed){
+                            infoId = _this.getReceiveInfoList[i].receiveInfoId
+                            index = i
+                            break
+                        }
+                    }
+                    console.log("id:"+infoId)
+                    if(infoId != null){
+                        console.log("id:"+infoId)
+                        setTimeout(()=>{
+                            getInfoByInfoId(infoId).then(res=>{
+                                if(res.status === 1){
+                                    console.log(res.result)
+                                    _this.receiveInfo = res.result
+                                    //为了有动画效果
+                                    setTimeout(()=>{
+                                        _this.isReceiveInfo = true
+                                    },200)
+                                    _this.getReceiveInfoList[index].hasPushed = true
+                                }
+                            })
+                        },8000)
+                    }
+                };
                     
                 ws.onclose = function(evt) {    
-                    alert("连接中断");    
+                    // alert("连接中断");    
                 };    
                     
                 ws.onopen = function(evt) {    
-                    alert("连接成功");    
+                    // alert("连接成功");    
                 };  
-            
         },
         logout () {
             window.localStorage.removeItem("token")
@@ -710,7 +758,6 @@ li.nav-news.js-show-menu ul{position: absolute; visibility: hidden; background:#
 #jsddm ul li{ float:left; width:105px; padding-left:20px; line-height:40px;}
 
 </style>
-
 
 
 

@@ -8,6 +8,7 @@ import Search from '@/views/Search'
 import UserInfo from '@/views/userinfo/UserInfo'
 import UserMod from '@/views/UserMod'
 import TypeArticleList from '@/views/TypeArticleList'
+import ForgetPwd from '@/views/ForgetPwd'
 
 
 import RegisterSuccess from '@/views/RegisterSuccess'
@@ -53,6 +54,11 @@ export default new Router({
       path: '/userinfo',
       name: 'userinfo',
       component: UserInfo
+    },
+    {
+      path: '/forgetPwd',
+      name: 'forgetPwd',
+      component: ForgetPwd
     },
     {
       path: '/usermod',
