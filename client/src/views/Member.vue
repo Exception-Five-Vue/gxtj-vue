@@ -24,7 +24,7 @@
             <div class="user-name">{{userInfo.nickname}}<a href="#" target="_blank"><i class="i-vip icon-vip" title="Oreo黑卡会员"></i></a></div>
             <!-- <div class="user-one">产品老司机</div> -->
                  <div class="user-one user-auth">Oreo用户<i class="i-icon icon-auth3" title="Oreo认证作者"></i></div>
-                 <a href="javascript:" class="btn btn-messages js-login" uid="1373658" name="判官">给TA发私信</a>
+                 <a href="javascript:" class="btn btn-messages js-login" uid="1373658" name="判官">查看更多</a>
                  <div class="admin-btn-warp"></div>
         	</div>
         	<div class="user-info-box">
@@ -66,8 +66,8 @@
         <div class="menu-warp">
             <ul id=myTabs1>
                 <li class="active" onMouseDown=Tabs1(this,0);><a href="#menu">最近阅读</a></li>
-                <li class="" onMouseDown=Tabs1(this,1);><a href="#menu">TA的评论</a></li>
-                <li class="" onMouseDown=Tabs1(this,2);><a href="#menu">TA的收藏</a></li>
+                <li class="" onMouseDown=Tabs1(this,1);><a href="#menu">我的评论</a></li>
+                <li class="" onMouseDown=Tabs1(this,2);><a href="#menu">我的收藏</a></li>
                 <!-- <li class="" onMouseDown=Tabs1(this,3);><a href="#menu">TA的关注</a></li> -->
                 <!-- <li class="" onMouseDown=Tabs1(this,4);><a href="#menu" >TA的项目</a></li> -->
             </ul>

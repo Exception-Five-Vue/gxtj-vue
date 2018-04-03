@@ -3,7 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import VueMeta from 'vue-meta'
+Vue.use(VueMeta)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

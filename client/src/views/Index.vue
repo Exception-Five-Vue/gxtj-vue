@@ -634,7 +634,7 @@ export default {
                                     _this.getReceiveInfoList[index].hasPushed = true
                                 }
                             })
-                        },5000)
+                        },8000)
                     }
                 };
                     

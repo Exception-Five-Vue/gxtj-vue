@@ -24,17 +24,7 @@
                         <div class="search-history search-hot">
                             <strong>热搜词</strong>
                             <ul>
-                                <li class="transition"><a href="#">数码</a></li>
-                                <li class="transition"><a href="#">科技</a></li>
-                                <li class="transition"><a href="#">互联网</a></li>
-                                <li class="transition"><a href="#">汽车之家</a></li>
-                                <li class="transition"><a href="#">Uber</a></li>
-                                <li class="transition"><a href="#">支付宝</a></li>
-                                <li class="transition"><a href="#">大数据</a></li>
-                                <li class="transition"><a href="#">创业</a></li>
-                                <li class="transition"><a href="#">旅游</a></li>
-                                <li class="transition"><a href="#">美团</a></li>
-                                <li class="transition"><a href="#">社交</a></li>
+                                <li class="transition" v-for="item in searchHotWords"><a href="#">{{item}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -51,8 +41,8 @@
                             <li v-for="type in typeList"><a href="#">{{type.typeName}}</a></li>
                         </ul>
                     </li> -->
-                    <li class="nav-news" v-for="type in typeList">
-                        <router-link :to="{path:'/type/'+type.typeId}">{{type.typeName}}</router-link>
+                    <li class="nav-news" v-for="item in typeList">
+                        <router-link :to="{path:'/type/'+item.typeId}">{{item.typeName}}</router-link>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right transition  xiala main_nav">
@@ -161,7 +151,8 @@ export default {
             // isRegisterShow: false
             searchContent: "",
             defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
-            typeList: []
+            typeList: [],
+            searchHotWords: ['Uber','科技','健康','AI','检察院','香港','创业','律师','医生','国企','合同法','普京']
         }
     },
     mounted(){

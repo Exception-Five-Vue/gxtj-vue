@@ -50,7 +50,7 @@
                     <span class="article-share pull-left">阅读量{{information.reads}}</span>
                     <span class="article-pl pull-left">点赞{{information.likes}}</span>
 					<span class="article-pl pull-left" style="margin-left:14px">评论{{commentCount}}</span>
-                    <a href="#" class="column-link" target="_blank">创业维艰</a> <i></i>
+                    <!-- <a href="#" class="column-link" target="_blank">创业维艰</a> <i></i> -->
                 </div>                     
             </div>
 <!--管理员按钮-->
@@ -94,13 +94,11 @@
              </div>
                     <!--管理员底部按钮-->
              <div class="article-manage-bar article-bottom-manage-bar" id="article-bottom-manage-bar197460"></div>
-			 <!-- <div class="tag-box ">
+			 <div class="tag-box ">
                   <ul class="transition">
-                      <a href="#" target="_blank"><li class="transition">投稿</li></a>
-                      <a href="#" target="_blank"><li class="transition">创业</li></a>
-                      <a href="#" target="_blank"><li class="transition">商业模式</li></a>
+                      <a href="#" target="_blank" v-for="(item,index) in infoKeyWord" v-if="index<=2"><li class="transition">{{item}}</li></a>
                    </ul>
-              </div> -->
+              </div>
               <!--公共评论-->
               <div class="pl-wrap" id="pl-wrap-article197460" name="pl-wrap-article">
                    <div class="pl-form-wrap">
@@ -355,8 +353,8 @@ export default {
 			isReceiveInfo: false,
 			page: 1,
 			hotInfoList: null,
-			hotKeyWords: ['李彦宏', '电影','人工智能','自动','女性','社会','退休','SUV','收购','香港','中国','微博']
-
+			hotKeyWords: ['李彦宏', '电影','人工智能','自动','女性','社会','退休','SUV','收购','香港','中国','微博'],
+			infoKeyWord: []
 		}
 	},
 	components: {VHeader,VFooter},
@@ -387,6 +385,8 @@ export default {
 			if(res.status === 1){
 				console.log(res)
 				this.information = res.result
+				this.infoKeyWord = this.information.keyword.split(",");
+
 				let param = new FormData()
 				param.append("id",this.infoId)
 				// getPushInfo(param).then(res => {
