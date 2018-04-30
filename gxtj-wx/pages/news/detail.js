@@ -18,10 +18,13 @@ Page({
         relatedInfos: [],
         infoId: null,
         timer: null,
+        timer2: null,
         logInfo: []
     },
     onUnload(){
       clearInterval(this.timer)
+      clearTimeout(this.timer2)
+
     },
     onLoad:function(options){
         // if(options.tag.toLowerCase() === 'h5'){
@@ -71,7 +74,7 @@ Page({
             })
           },5000)
 
-          setTimeout(()=>{
+          this.timer2 = setTimeout(()=>{
             let param = {
               "userId": wx.getStorageSync('userId'),
               "infoId": this.infoId

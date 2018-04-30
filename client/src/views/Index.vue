@@ -82,7 +82,7 @@
                         <a href="#" target="_blank" title="购买VIP会员"></a>
                         <span class="time">{{info.publishDate | formatDateDiff}}</span>
                         <i class="icon icon-like" style="margin-left:20px" @click="likeArticle(0,info)" :class="{'active': info.hasLike && isLogined}"></i><em>{{info.likes}}</em>
-                        <i class="icon icon-no-like" style="margin-left:20px" @click="likeArticle(1,info)" :class="{'active': info.reads>0 && isLogined}"></i><em>{{info.reads}}</em>
+                        <!-- <i class="icon icon-no-like" style="margin-left:20px" @click="likeArticle(1,info)" :class="{'active': info.reads>0 && isLogined}"></i><em>{{info.reads}}</em> -->
                         <i class="icon icon-cmt"></i><em>0</em>
                     </div>
                     <div class="mob-sub">{{info.description}}</div>
