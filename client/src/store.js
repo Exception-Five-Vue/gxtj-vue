@@ -4,7 +4,7 @@ Vue.use(Vuex)
 // 这里定义初始值
 let state ={
     receiveInfoList: [{
-        receiveInfoId: 28919,
+        receiveInfoId: 29526,
         hasPushed: false
     },{
         receiveInfoId: 28251,

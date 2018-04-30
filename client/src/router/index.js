@@ -9,7 +9,7 @@ import UserInfo from '@/views/userinfo/UserInfo'
 import UserMod from '@/views/UserMod'
 import TypeArticleList from '@/views/TypeArticleList'
 import ForgetPwd from '@/views/ForgetPwd'
-
+import UserReadCount from '@/views/UserReadCount'
 
 import RegisterSuccess from '@/views/RegisterSuccess'
 import Test from '@/views/test/Test'
@@ -66,6 +66,11 @@ export default new Router({
       component: UserMod
     },
     {
+      path: '/userReadCount',
+      name: 'userReadCount',
+      component: UserReadCount
+    },
+    {
       path: '/success/:code',
       name: 'Success',
       component: RegisterSuccess
@@ -79,6 +84,6 @@ export default new Router({
       path: '/404',
       name: '404',
       component: Page404
-    }
+    },
   ]
 })

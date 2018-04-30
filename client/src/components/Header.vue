@@ -21,8 +21,8 @@
                             </ul>
                             <div class="pull-right empty-history js-empty-history">清空历史</div>
                         </div>
-                        <div class="search-history search-hot">
-                            <strong>热搜词</strong>
+                        <div class="search-history search-hot"  v-if="searchHotWords!=null && searchHotWords.length>0">
+                            <strong style="display:block">热搜词</strong>
                             <ul>
                                 <li class="transition" v-for="item in searchHotWords"><a href="#">{{item}}</a></li>
                             </ul>
@@ -68,6 +68,7 @@
                             <span class="caret"></span>
                             <ul class="logined-show-menu">
                                 <li><router-link :to="`/member`">个人中心</router-link></li>
+                                <li><router-link :to="`/userReadCount`">阅读统计</router-link></li>
                                 <li><router-link :to="`/usermod`">兴趣统计</router-link></li>
                                 <li @click="logout"><router-link :to="`/`">退出登录</router-link></li>
                             </ul>
@@ -92,7 +93,7 @@
                                     </label>
                                     <a class="js-label-select label-select-box hide login-label-select text-center"><span class="js-country-user">+86</span><i class="icon-modal icon-l-caret"></i></a>
                                     <div class="login-operation">
-                                        <a href="/user/reset_password" class="js-forget-passward pull-right">忘记密码</a>
+                                        <router-link :to="`/forgetPwd`" class="js-forget-passward pull-right">忘记密码</router-link>
                                     </div>
                                     <button class="js-btn-login btn-login" @click="loginConfirm">登&nbsp;录</button>
                                 </div>
@@ -138,7 +139,7 @@
   </section>
 </template>
 <script>
-import {requestLogin, requestRegister,getAllType} from '../api/api.js'
+import {getSearchWords,requestLogin, requestRegister,getAllType} from '../api/api.js'
 
 export default {
     props:['isLogined','userInfo','isLoginShow','isRegisterShow','isSearchShow'],
@@ -152,13 +153,18 @@ export default {
             searchContent: "",
             defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
             typeList: [],
-            searchHotWords: ['Uber','科技','健康','AI','检察院','香港','创业','律师','医生','国企','合同法','普京']
+            searchHotWords: null
         }
     },
     mounted(){
          getAllType().then(res=>{
             if(res.status === 1){
                 this.typeList = res.result
+            }
+        })
+        getSearchWords().then(res=>{
+            if(res.status === 1){
+                this.searchHotWords = res.result
             }
         })
     },

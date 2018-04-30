@@ -81,7 +81,8 @@
                         </a>
                         <a href="#" target="_blank" title="购买VIP会员"></a>
                         <span class="time">{{info.publishDate | formatDateDiff}}</span>
-                        <i class="icon icon-fvr"></i><em>{{info.likes}}</em>
+                        <i class="icon icon-like" style="margin-left:20px" @click="likeArticle(0,info)" :class="{'active': info.hasLike && isLogined}"></i><em>{{info.likes}}</em>
+                        <i class="icon icon-no-like" style="margin-left:20px" @click="likeArticle(1,info)" :class="{'active': info.reads>0 && isLogined}"></i><em>{{info.reads}}</em>
                         <i class="icon icon-cmt"></i><em>0</em>
                     </div>
                     <div class="mob-sub">{{info.description}}</div>
@@ -148,106 +149,24 @@
     </div> -->
     <div class="placeholder"></div>
 <!--传言-->
-<!--传言部分开始-->
-    <!-- <div id="rumor_center"></div>
-    <div class="box-moder moder-rumors-list">
-        <h3>传言</h3>
-        <span class="span-mark"></span>
-        <div class="big2-pic pull-right">
-            <a href="#" class="back-img" target="_blank">
-                <img class="lazy" src="../assets/sy-img/105108838520.jpg" alt="">
-            </a>
-            <a href="https://chuanyan.huxiu.com/rumor/detail/684.html" target="_blank">
-                <div class="big2-pic-content">
-                    <h2 class="t-h1">传苹果和亚马逊正在竞购“007”品牌特许经营权</h2>
-                </div>
-                <div class="clear"></div>
-            </a>
-        </div>
-        <div class="clear"></div>
-        <ul class="rumorlist">
-            <li>
-                <div class="icon-clock"><img src="../assets/images/clock.jpg"/></div>
-                <p class="rumor-time">09月07日  08:00</p>
-                <p class="rumor-detail"><a href="#" target="_blank">美媒报道称，苹果和亚马逊正在竞购“007”詹姆斯·邦德品牌的特...</a></p>
-            </li>
-        </ul>
-        <div class="rumor-more">
-            <p><a href="#" target="_blank">详情>></a></p>
-        </div> -->
-                    <!--24小时不展示此按钮-->
-            <!-- <div class="rumor-brunt-box">
-                <a class="btn btn-blue-cy js-update-cy transition  js-show-bruntback-box1" >我要爆料</a>
-            </div>
-            </div> -->
-    <div class="placeholder"></div>
-    <!--传言部分结束-->
-	<!-- <div class="ad-wrap">
-    	<div class="ad-title">广告</div>
-	</div>
-    <div class="placeholder"></div>
-    <div class="box-moder moder-project-list">
-        <h3>创业白板</h3>
+    <div class="box-moder moder-project-list" v-show="isLogined" >
+        <h3>您可能感兴趣的内容</h3>
         <span class="pull-right project-more"><a href="#" class="transition" target="_blank">全部</a></span>
         <span class="span-mark"></span>
-        <ul>
-            <li>
+        <ul v-if="mostInterestInfos != null">
+            <li v-for="info in mostInterestInfos" v-if="info != undefined">
                 <div class="project-pic">
-                    <img src="../assets/sy-img/1503478306719861.png">
+                    <img :src="`${info.infoImage.image}`" :onerror="defaultImg" :alt="info.title">
                 </div>
                 <div class="project-content">
-                     <div class="project-title">
-                         <a href="#" class="transition" target="_blank">车悦宝</a>
+                     <div class="project-title" style="font-weight: 600;color: #000;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">
+                         <a href="#" class="transition" target="_blank">{{info.title}}</a>
                      </div>
-                     <p>车载综合音频娱乐服务商</p>
-                 </div>
-            </li>
-           	<li>
-                <div class="project-pic">
-                        <img src="../assets/sy-img/1503478306719861.png">
-                </div>
-                <div class="project-content">
-                     <div class="project-title">
-                         <a href="#" class="transition" target="_blank">车悦宝</a>
-                     </div>
-                     <p>车载综合音频娱乐服务商</p>
-                 </div>
-            </li>
-            <li>
-                <div class="project-pic">
-                        <img src="../assets/sy-img/1503478306719861.png">
-                </div>
-                <div class="project-content">
-                     <div class="project-title">
-                         <a href="#" class="transition" target="_blank">车悦宝</a>
-                     </div>
-                     <p>车载综合音频娱乐服务商</p>
-                 </div>
-            </li>
-            <li>
-                <div class="project-pic">
-                        <img src="../assets/sy-img/1503478306719861.png">
-                </div>
-                <div class="project-content">
-                     <div class="project-title">
-                         <a href="#" class="transition" target="_blank">车悦宝</a>
-                     </div>
-                     <p>车载综合音频娱乐服务商</p>
-                 </div>
-            </li>
-            <li>
-                <div class="project-pic">
-                        <img src="../assets/sy-img/1503478306719861.png">
-                </div>
-                <div class="project-content">
-                     <div class="project-title">
-                         <a href="#" class="transition" target="_blank">车悦宝</a>
-                     </div>
-                     <p>车载综合音频娱乐服务商</p>
+                     <p>{{info.description}}</p>
                  </div>
             </li>
          </ul>
-        <div class="project-btn-box">
+        <!-- <div class="project-btn-box">
             <a class="js-open-cy btn btn-blue-cy transition">立即报名，获得曝光机会！</a>
         </div>
         <ul class="project-info">
@@ -255,10 +174,10 @@
             <li>1.优质的展示和访谈机会</li>
             <li>2.获得投资人的关注</li>
             <li>3.Oreo提供的创业支持服务</li>
-        </ul>
+        </ul> -->
     </div>
     <div class="placeholder"></div>
-    <div class="box-moder moder-project-list promote-box">
+    <!-- <div class="box-moder moder-project-list promote-box">
         <h3>赞助内容</h3>
         <span class="span-mark"></span>
         <ul>
@@ -299,91 +218,11 @@
                 </div>
             </li>
          </ul>
-    </div>
-    <div class="placeholder"></div> -->
-
-
-<!--研究报告部分开始-->
-    <!-- <div class="box-moder hot-article">
-        <h3>创新案例</h3>
-        <span class="pull-right project-more story-more">
-            <a href="#" class="transition" target="_blank">全部</a></span>
-        <span class="span-mark"></span>
-        <ul>           
-            <li>
-            	<div class="hot-article-img">
-                	<a href="#" target="_blank">
-                   		<img src="../assets/sy-img/105108838520.jpg">
-                	</a>
-            	</div>
-            	<a href="#" class="transition" target="_blank">【经济学人】比特币内战打响，加密货币走到分岔路口</a>
-            	<div class="report-author-info" style="margin-left:0px;margin-top:0px;">
-                	<span class="author-face">
-                    	<img src="../assets/sy-img/97.jpg">
-                	</span>
-                	<span>Oreo会员小秘书</span>
-                	<div style="margin-left: 40px;margin-top: 5px;">微信号：huxiuvip302</div>
-            	</div>
-        	</li>
-        </ul>
-        <div class="report-explain">全年30+篇 案例分析，复盘有代表性的创新公司，还原商业成功背后的魔鬼细节。</div>
-    </div>
-    <div class="placeholder"></div>
-    <div class="box-moder hot-article">
-        <h3>热文</h3>
-        <span class="span-mark"></span>
-        <ul>
-            <li>
-                <div class="hot-article-img">
-                     <a href="#" target="_blank" title="华谊：老了，还花心">
-                        <img src="../assets/sy-img/105108838520.jpg">
-					 </a>
-                </div>
-                <a href="#" class="transition" target="_blank">华谊：老了，还花心</a>
-            </li>
-            <li>
-                <div class="hot-article-img">
-                     <a href="#" target="_blank" title="华谊：老了，还花心">
-                        <img src="../assets/sy-img/105108838520.jpg">
-					 </a>
-                </div>
-                <a href="#" class="transition" target="_blank">华谊：老了，还花心</a>
-            </li>
-            <li>
-                <div class="hot-article-img">
-                     <a href="#" target="_blank" title="华谊：老了，还花心">
-                        <img src="../assets/sy-img/105108838520.jpg">
-					 </a>
-                </div>
-                <a href="#" class="transition" target="_blank">华谊：老了，还花心</a>
-            </li>
-            <li>
-                <div class="hot-article-img">
-                     <a href="#" target="_blank" title="华谊：老了，还花心">
-                        <img src="../assets/sy-img/105108838520.jpg">
-					 </a>
-                </div>
-                <a href="#" class="transition" target="_blank">华谊：老了，还花心</a>
-            </li>
-            <li>
-                <div class="hot-article-img">
-                     <a href="#" target="_blank" title="华谊：老了，还花心">
-                        <img src="../assets/sy-img/105108838520.jpg">
-					 </a>
-                </div>
-                <a href="#" class="transition" target="_blank">华谊：老了，还花心</a>
-            </li>
-            <li>
-                <div class="hot-article-img">
-                     <a href="#" target="_blank" title="华谊：老了，还花心">
-                        <img src="../assets/sy-img/105108838520.jpg">
-					 </a>
-                </div>
-                <a href="#" class="transition" target="_blank">华谊：老了，还花心</a>
-            </li>
-            
-         </ul>
     </div> -->
+    <div class="placeholder"></div>
+
+
+
     <div class="placeholder"></div>
 </div>
 </div>
@@ -406,7 +245,8 @@
 
 <script>
 
-import {getAllType, getUserInfoById,requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo, getInfoByInfoId} from '../api/api.js'
+import {deleteUserLike,addUserLike,updateUserLike,getAllUserLike,updateInfo,pushInfoByKeyword,getAllType, getUserInfoById,requestLogin, 
+requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo, getInfoByInfoId} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 
@@ -437,10 +277,12 @@ export default {
             displayInfoList: null,
             logInfoList: [],
             hotCommentList: [],
+            mostInterestInfos: null,
             receiveInfo: null,
             isReceiveInfo: false,
             typeList: [],
             page: 1,
+            userLikeList: []
         }
     },
     computed:mapGetters(['getReceiveInfoList']),
@@ -452,6 +294,7 @@ export default {
         if(token!=null&&token!=""){
             // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
             this.userInfo.userId = window.localStorage.getItem("user");
+            console.log("hahah!",this.userInfo.userId)
             getUserInfoById(this.userInfo.userId).then(res=>{
                 if(res.status === 1){
                     this.userInfo = res.result
@@ -469,6 +312,128 @@ export default {
 
     },
     methods: {
+        //0点赞 1点踩
+        likeArticle(flag ,information){
+            if(!this.isLogined){
+				this.showSuccessMsg({message: "此操作需要登录"});
+				return
+            }
+
+            if(flag === 0){
+                let param = {}
+                if(information.hasLike){//已经点过赞
+
+                    for(let item of this.userLikeList){
+                        if(item.userId === this.userInfo.userId &&
+                            item.infoId === information.infoId){
+                            deleteUserLike(item.userLikeId).then(res=>{
+                                if(res.status === 1){
+                                    console.log("删除点赞记录成功")
+                                    param.likes = information.likes+1
+                                    param.infoId = information.infoId,
+                                    updateInfo(param).then((res1)=>{
+                                        
+                                        if(res1.status === 1){
+                                            // this.initData()
+                                            console.log("点赞新增成功")
+                                            information.likes -= 1
+                                            information.hasLike = false
+                                        }else{
+                                            console.log("点赞新增失败",res)
+                                            // console.log(res.status)
+                                        }
+                                    })
+                                }else{
+                                    console.log("删除:",res)
+                                }
+                            })
+                            break
+                        }
+                    }
+
+                }else{
+                    param.userId = this.userInfo.userId
+                    param.type = 0
+                    param.infoId = information.infoId
+                    addUserLike(param).then(res=>{
+                        if(res.status === 1){
+                            console.log("新增点赞记录成功")
+                            let param1 = {}
+                            param1.likes = information.likes+1
+                            param1.infoId = information.infoId,
+                            updateInfo(param1).then((res)=>{
+                                
+                                if(res.status === 1){
+                                    // this.initData()
+                                    console.log("点赞新增成功")
+                                    
+                                    information.likes += 1
+                                    information.hasLike = true
+                                }else{
+                                    console.log("点赞新增失败",res)
+                                    // console.log(res.status)
+                                }
+                            })
+                        }
+                    })
+
+                }
+                // getAllUserLike().then(res=>{
+                //     if(res.status === 1){
+                //         this.userLikeList = res.result
+                //         let param = {}
+                //         for(let item of this.userLikeList){
+
+                //             console.log(item.userId ,this.userInfo.userId, item.infoId, information.infoId)
+                //             if(item.userId === this.userInfo.userId &&
+                //                 item.infoId === information.infoId){//已经点过赞了
+                //                 console.log("已经点过赞了")
+                //             }else{
+                //                 param.userId = this.userInfo.userId
+                //                 param.type = 0
+                //                 param.infoId = information.infoId
+                //                 addUserLike(param).then(res1=>{
+                //                     if(res1.status === 1){
+
+                //                         console.log("新增点赞记录成功")
+                //                     }
+                //                 })
+                //             }
+                //         }
+                //     }
+                // })
+                //如果没有点过赞
+
+                // if(true){
+                //     newLikes = ++information.likes
+                // }else{
+                //     newLikes = --information.likes
+                // }
+                // let param = {
+                //     infoId: information.infoId,
+                //     likes: newLikes
+                // }
+                // updateInfo(param).then((res)=>{
+                //     console.log(res)
+                // })
+            }else{
+                let newDislike;
+                //如果没有点过踩
+                if(true){
+                    newDislike = ++information.reads
+                }else{
+                    newDislike = --information.reads
+                }
+                let param = {
+                    infoId: information.infoId,
+                    reads: newDislike
+                }
+                // updateInfo(param).then((res)=>{
+                //     console.log(res)
+                // })     
+            }
+            
+        }, 
         closePushInfo(){
 			this.isReceiveInfo = false
 		},
@@ -511,12 +476,29 @@ export default {
                                 for(let info of infos){
                                     info.isRemove = false
                                     info.isRead = false
+                                    info.hasLike = false
                                     for(let log of this.logInfoList){
                                         if(log.infoId === info.infoId){
                                             console.log(info.title+"已经读过")
                                             info.isRead = true
                                         }
                                     }
+                                    //查询是否点赞
+                                    getAllUserLike().then(res=>{
+                                        if(res.status === 1){
+                                            this.userLikeList = res.result
+                                            let param = {}
+                                            for(let item of this.userLikeList){
+
+                                                // console.log(item.userId ,this.userInfo.userId, item.infoId, info.infoId)
+                                                if(item.userId === this.userInfo.userId &&
+                                                    item.infoId === info.infoId){//已经点过赞了
+                                                    info.hasLike = true
+                                                    console.log("已经点过赞了",info.title)
+                                                }
+                                            }
+                                        }
+                                    })
                                 }
                                 console.log(infos)
                                 // for(let item of this.infoList){
@@ -539,6 +521,16 @@ export default {
                                     this.isMsgAlert = true
                                 },3000)
                                 
+                                //您可能感兴趣的内容
+                                if(infos === null || infos[0]==undefined){return}
+                                let param = new FormData()
+                                param.append('id', infos[0].infoId)
+                                pushInfoByKeyword(param).then(res=>{
+                                    if(res.status === 1){
+                                        this.mostInterestInfos = res.result
+                                    }
+                                    console.log(res)
+                                })
                             }
                             
                         })

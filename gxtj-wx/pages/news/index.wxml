@@ -1,0 +1,54 @@
+<!-- index.wxml -->
+
+<import src="../common/template/article.wxml"/>
+<import src="../common/template/toast.wxml"/>
+
+<view>
+    <!-- 头部导航 -->
+    <view class="header">
+      <image bindtap="handleSearch" class="sv-search" src="/image/icon-search.png"></image>
+        <scroll-view class="sv__container" scroll-x="true">
+                <view 
+                    class="sv__item active" 
+                    bindtap='changeToRecommond'
+                >
+                推荐
+                </view>
+            <block wx:for="{{typeList}}" wx:key="typeId" >
+                <view 
+                    class="sv__item" 
+                    bindtap="changeType" 
+                    data-type="{{ item }}"
+                >
+                {{ item.typeName }}
+                </view>
+            </block>
+        </scroll-view>
+        <!-- <image bindtap="manageTabs" class="sv-manager" src="/image/icon-manage.png"></image> -->
+    </view>
+    <!-- 滚动页面 -->
+    <view class="msg-alert {{isMsgAlert?'active':''}}">{{alertMsg}}</view>
+    <swiper class="swiper__container" wx:if="{{ swiperList.length}}" indicator-dots="{{ false }}" autoplay="true" interval="3000">
+
+          <swiper-item wx:for="{{swiperList}}" wx:key="id">
+              <navigator url="/pages/news/detail?id={{ item.infoId }}">
+
+                <view class="swiper__content">
+                    <image src="{{item.infoImage.image}}" class="swiper__item" mode="aspectFill"  />
+                    <view class="swiper__desc">
+                        <text class="swiper__text">{{ item.title }}</text>
+                        <text class="swiper__id">[{{ index+1 }}/{{ swiperList.length }}]</text>
+                    </view>
+                </view>
+              </navigator>
+          </swiper-item>
+    </swiper>
+    <view class="articles">
+        <block wx:for="{{ displayInfoList }}" wx:key="id">
+          <template is="{{ 'newsStyle' + 2 }}" data="{{ ...item }}" />
+        </block>
+    </view>
+<template is="toast" data="{{txt,isShow,iconClass}}"></template>
+    <include src="../common/template/footer.wxml"/>
+
+</view>

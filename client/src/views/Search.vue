@@ -47,7 +47,7 @@
   </section>
 </template>
 <script>
-import {getUserInfoById,requestLogin, requestRegister,getInfoByDate,getInfoBySearchBar} from '../api/api.js'
+import {addSearchLog,getUserInfoById,requestLogin, requestRegister,getInfoByDate,getInfoBySearchBar} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
@@ -151,6 +151,14 @@ export default {
         },
         requestSearch(...data){
             this.searchContent = data[0]
+            let param = {
+                searchContent: this.searchContent
+            }
+            addSearchLog(param).then(res=>{
+                if(res.status === 1){
+                    console.log("添加搜索記錄成功")
+                }
+            })
             this.init()
         },
         init(){

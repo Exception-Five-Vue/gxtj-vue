@@ -1,0 +1,75 @@
+<import src="../../utils/wxParse/wxParse.wxml"/>
+
+
+<view class="page__detail">
+    <view class="detail">
+        <view class="detail__title">
+            {{ article.title }}
+        </view>
+        <view class="article__desc">
+            <text class="article__source" wx:if="{{ article.author }}">{{ article.author }}</text>
+            <text class="article__time">{{ article.publishDate }}</text>
+            <view class="article__count">
+                <image class="article__icon" src="/image/icon-comt.png"></image>
+                <text>{{ commentList.length }}</text>
+                <image class="article__icon" src="/image/icon-priaze.png'
+                    bindtap='likeArticle'
+                    data-id='{{article.infoId}}'></image>
+                <text>{{ article.likes }}</text>
+            </view>
+        </view>
+
+        <view class="article__content wxParse">
+             <template is="wxParse" data="{{wxParseData:content.nodes}}"/> 
+        </view>
+    </view>
+
+    <!-- 相关新闻 -->
+    <view class="detail__relation">
+        <view class="relation__title">相关新闻</view>
+    </view>
+        <scroll-view scroll-x="true" style=" white-space: nowrap; display: flex" >
+<!--  display: inline-block-->
+  <block wx:for="{{relatedInfos}}" wx:key="id">
+    <view class="article-box">
+      <image mode="aspectFill" src="{{item.infoImage.image}}"></image> 
+      <view class='title'>{{item.title}}</view>
+    </view>
+  </block>
+</scroll-view>
+
+<!--评论  -->
+<!-- 相关新闻 -->
+<view class="detail__relation">
+    <view class="relation__title">最近评论</view>
+</view>
+<view class='comment-detail-box'>
+  <view class='comment-main-box'>
+    <view class='comment-title'>
+      <text>评论----(共{{commentList.length}}条)</text>
+    </view>
+    <block wx:for="{{commentList}}" wx:key="">
+      <view class='comment-item'>
+        <view class='comment-item-header'>
+          <view class='left-img'>
+            <image src='{{item.userInfo.userImageUrl}}' binderror='imageError' data-img="commentList[{{index}}].userInfo.userImageUrl"></image>
+          </view>
+          <view class='right-user'>
+            <text class='user-name'>{{item.userInfo.nickname}}</text>
+          </view>
+        </view>
+        <view class='comment-body'>
+          <view class='comment-txt'>
+            <text>{{item.content}}</text>
+          </view>
+          <view class=''></view>
+        </view>
+        <view class='comment-time'>{{item.createTime}}</view>
+      </view>
+    </block>
+  </view>
+  <view class='comment-content-box'>
+    <input type='text' placeholder='已有{{commentList.length}}个评论,等待你的发声' bindconfirm='addComment' value='{{commentInput}}'></input>
+  </view>
+</view>
+</view>
