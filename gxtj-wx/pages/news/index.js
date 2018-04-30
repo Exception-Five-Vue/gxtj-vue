@@ -94,7 +94,6 @@ Page({
                   }
                   this.infoList.splice(0, 10)
                 }
-
                 console.log("!!!:", this.data.displayInfoList)
                 this.alertMsg = `为您推荐了${this.data.displayInfoList.length}条新闻`
 
@@ -119,8 +118,6 @@ Page({
               // console.log(res)
               if (res.status === 1) {
 
-                // $vm.toastShow(this, "休息一会吧", "icon-correct");  
-                // wx.showToast({ title: '休息一会吧,暂无新的资讯', duration: 2000 })      
                 let infoList = res.result.filter(item => {
                   return item.publishDate = formatDate(item.publishDate)
                 })
@@ -182,10 +179,31 @@ Page({
     onReachBottom(){
       if(wx.getStorageSync("token")){
         let length = this.infoList.length
+      
         if (length <= 10) {
-          this.data.displayInfoList = this.data.displayInfoList.concat(this.infoList)
-          this.infoList.splice(0, length)
-          $vm.toastShow(this, "休息一会吧", "icon-correct");
+          this.data.page += 1
+          let page = this.data.page
+          console.log("当前页数:",page)
+          
+          $vm.utils.get(`/public/information/findInfoByDate/${page}`).then(res => {
+            // console.log(res)
+            if (res.status === 1) {
+
+              let infoList = res.result.filter(item => {
+                return item.publishDate = formatDate(item.publishDate)
+              })
+              console.log(this.infoList,infoList)
+              this.data.displayInfoList = this.data.displayInfoList.concat(infoList)
+
+              this.setData({
+                displayInfoList: this.data.displayInfoList,
+              })
+
+            }
+          })
+          // this.data.displayInfoList = this.data.displayInfoList.concat(this.infoList)
+          // this.infoList.splice(0, length)
+          // $vm.toastShow(this, "休息一会吧", "icon-correct");
         } else {
           for (let i = 0; i < 10; i++) {
             this.data.displayInfoList.push(this.infoList[i])
