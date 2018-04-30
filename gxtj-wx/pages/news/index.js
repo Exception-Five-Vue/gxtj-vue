@@ -24,13 +24,11 @@ Page({
         page: 1
     },
     onShow(){
-      getCategorys().then(res => this.setData({
-        categoryTabs: res
-      }))
-    },
-    onReady(){
         this.getTypeList()
         this.getInfoList()
+    },
+    onReady(){
+
     },
     onLoad: function() {
 
@@ -50,6 +48,10 @@ Page({
       })
     },
     getInfoList() {
+      this.data.page = 1
+      this.data.infoList = []
+      this.data.displayInfoList = []
+      this.data.swiperList = []
       $vm.utils.get('/public/comment/all').then(res1 => {
         console.log("获取评论:",res1)
         if(res1.status === 1){
@@ -74,7 +76,7 @@ Page({
                   }
                   console.log("此篇文章评论量:", info.commentCount)
                 }
-
+                
                 this.data.swiperList.push(infoList[0])
                 this.data.swiperList.push(infoList[1])
                 this.data.swiperList.push(infoList[2])
@@ -195,8 +197,9 @@ Page({
         })
 
       }else{//没有登录
-        this.page += 1
-        let page = this.page
+        console.log("没有登录!!!")
+        this.data.page += 1
+        let page = this.data.page
         $vm.utils.get(`/public/information/findInfoByDate/${page}`).then(res => {
           // console.log(res)
           if (res.status === 1) {
