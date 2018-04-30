@@ -74,10 +74,10 @@
             </div>
 			<div class="Qr-code">
                                                     
-                 <div class="praise-box transition js-like-article pull-right " :class="{'active': hasLike}" @click="likeArticle">
+                 <div class="praise-box transition js-like-article pull-right " :class="{'active': information.hasLike}" @click="likeArticle">
                       <i class="icon icon-article-zan"></i><span class="num">{{information.likes}}</span>
                  </div>
-				 <span class="btn tool-tip  btn-exceptional js-qr-ds transition">打赏</span>
+				 <!-- <span class="btn tool-tip  btn-exceptional js-qr-ds transition">打赏</span> -->
                  <div class="js-qr-img transition info-false">
                       <div class="article-zfb-wx-box" onmouseover="isOut=false" onmouseout="isOut=true">
                            <ul>
@@ -308,11 +308,35 @@
         </router-link>
         <i class="icon icon-close" @click="closePushInfo"></i>
     </div>
+
+	 <div v-if="mostInterestInfos!=null && mostInterestInfos.length>0" class="most-interest-wrapper" :class="{'active': isMostInterestShow}">			
+		<!-- Controllers-->
+		<!-- <div class="controller-container"><span class="controller is_current" id="big">BIG CARD</span><span class="controller" id="medium">MEDIUM CARD</span><span class="controller" id="small">SMALL CARD</span></div> -->
+		<!-- Cards-->
+		<h2 style="color:#000;font-size:20px">给您推荐了以下感兴趣的内容:</h2>
+		<div class="card card--big">
+			<div class="img-wrapper">
+			<img class="card__image" :src="`${mostInterestInfos[0].infoImage.image}`" :onerror="defaultImg" :alt="mostInterestInfos[0].title"></img>
+
+			</div>
+			<h2 class="card__title">{{mostInterestInfos[0].title}}</h2>
+			<span class="card__subtitle">By Mattia Astorino</span>
+			<p class="card__text">
+				{{mostInterestInfos[0].description}}
+			</p>
+			<div class="card__action-bar">
+				<button class="card__button" @click="isMostInterestShow = false">关闭</button>
+				<button class="card__button" @click="changeMostInterest()">试试别的</button>
+			</div>
+		</div>
+	 </div>
   </section>
 </template>
 
 <script>
-import {getInfoByInfoId, getPushInfo,getInfoByDate,getCommentsByInfoId,addComment,updateComment, updateInfo,getUserInfoById} from '../api/api.js'
+import {addUserLike,deleteUserLike,updateUserLike,getAllUserLike,makeUserRead,updateUserModForRead,getLogInfos,getNewEndTime,pushInfoByKeyword,getInfoByInfoId, 
+getPushInfo,getInfoByDate,getCommentsByInfoId,addComment,updateComment, 
+updateInfo,getUserInfoById} from '../api/api.js'
 import {GetDateDiff,formatDate} from '../utils/date.js';
 import {requestLogin, requestRegister} from '../api/api.js'
 import VFooter from '@/components/Footer.vue'
@@ -331,7 +355,9 @@ export default {
 				userMail: "",
 				userGroupId: 1
 			},
+			isMostInterestShow: false,
 			defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
+			defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
 			infoId:"",
 			isLogined: false,
 			isLoginShow: false,
@@ -339,7 +365,7 @@ export default {
 			isSearchShow: false,
 			information:{},
          defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
-
+			mostInterestInfos: null,
 			//已经点过赞
 			hasLike: false,
 			flag: false,
@@ -354,12 +380,17 @@ export default {
 			page: 1,
 			hotInfoList: null,
 			hotKeyWords: ['李彦宏', '电影','人工智能','自动','女性','社会','退休','SUV','收购','香港','中国','微博'],
-			infoKeyWord: []
+			infoKeyWord: [],
+			timer: null,
+			userLikeList: []
 		}
 	},
 	components: {VHeader,VFooter},
    computed:mapGetters(['getReceiveInfoList']),
 	mounted(){
+		//监听滚轮事件
+		window.addEventListener('scroll', this.handleScroll)
+
 		let token = window.localStorage.getItem("token")
 		if(token!=null&&token!=""){
 			// this.userInfo = JSON.parse(window.localStorage.getItem("user"))
@@ -384,7 +415,23 @@ export default {
 		getInfoByInfoId(this.infoId).then(res=>{
 			if(res.status === 1){
 				console.log(res)
+				res.result.hasLike = false
 				this.information = res.result
+				//查询是否点赞
+				getAllUserLike().then(res=>{
+					if(res.status === 1){
+						this.userLikeList = res.result
+						let param = {}
+						for(let item of this.userLikeList){
+							// console.log(item.userId ,this.userInfo.userId, item.infoId, info.infoId)
+							if(item.userId === this.userInfo.userId &&
+									item.infoId === this.infoId){//已经点过赞了
+									this.information.hasLike = true
+									console.log("已经点过赞了",info.title)
+							}
+						}
+					}
+				})
 				this.infoKeyWord = this.information.keyword.split(",");
 
 				let param = new FormData()
@@ -403,6 +450,58 @@ export default {
 				updateInfo(param2).then(res=>{
 					console.log(res)
 				})
+				console.log("dsadasdasd")
+				
+				if(this.isLogined){
+
+					//定时更新用户log endTime
+					getLogInfos().then(res=>{
+						console.log(res)
+
+						if(res.status === 1){
+							let logId;
+							for(let log of res.result){
+								if(log.infoId !== parseInt(this.infoId) ){continue}
+								logId = log.logId
+							}
+							this.timer = setInterval(()=>{
+								let nowDate = new Date().getTime()
+								let param = {
+									logId: logId,
+									endTime: nowDate
+								}
+								getNewEndTime(param).then(res=>{
+									if(res.status === 1){
+										console.log("更新成功")
+									}
+								})
+							},5000)
+						}
+					})
+
+					//时间到达20秒更新usermod
+					setTimeout(()=>{
+						let param = new FormData()
+						param.append("userId",this.userInfo.userId)
+						param.append("infoId",this.infoId)
+						updateUserModForRead(param).then(res=>{
+							if(res.status===1){
+								console.log("模型更新成功")
+							}
+						})
+
+						let param2 = new FormData()
+						param2.append("infoId",this.infoId)
+						makeUserRead(param2).then(res=>{
+							if(res.status === 1){
+								console.log("插入用户仔细阅读记录成功")
+							}
+						})
+					},20000)
+				}
+					
+
+				
 			}else{
 				// this.$router.push({path:'/404'})
 			}
@@ -420,7 +519,47 @@ export default {
 		// 	},5000)
 		// }
 	},
+
+	destroyed(){
+		if(this.timer === null){
+			return
+		}
+		clearInterval(this.timer)
+	},
 	methods:{
+		handleScroll () {
+			let h = document.body.scrollHeight
+			let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+			if(scrollTop / h >= 0.4 ){
+				if(this.mostInterestInfos!=null && this.mostInterestInfos.length>0){return}
+				//您可能感兴趣的内容
+				let param = new FormData()
+				param.append('id', this.infoId)
+				pushInfoByKeyword(param).then(res=>{
+					if(res.status === 1){
+						this.mostInterestInfos = res.result
+						for(let i in this.mostInterestInfos){
+							if(this.mostInterestInfos[i].infoId === parseInt(this.infoId)){
+								this.mostInterestInfos.splice(i,1)
+								console.log("dfasdasdasdasdas")
+							}
+						}
+						//为了有动画效果
+						setTimeout(()=>{
+							this.isMostInterestShow = true
+						},200)
+					}
+					console.log(res)
+				})
+			}
+		},
+		changeMostInterest(){
+			if(this.mostInterestInfos.length === 1){
+				this.showInfoMsg({title:"信息",message:"没有更多了哦!"})
+			}else{
+				this.mostInterestInfos.splice(0,1)
+			}
+		},
 		closePushInfo(){
 			this.isReceiveInfo = false
 		},
@@ -571,22 +710,79 @@ export default {
 				this.showSuccessMsg({message: "此操作需要登录"});
 				return
 			}
-			//如果没有点过赞
-			let newLikes;
-			if(!this.hasLike){
-				newLikes = ++this.information.likes
-				this.hasLike = true
+			let param = {}
+			if(this.information.hasLike){//已经点过赞
+				for(let item of this.userLikeList){
+					if(item.userId === this.userInfo.userId &&
+							item.infoId === this.information.infoId){
+							deleteUserLike(item.userLikeId).then(res=>{
+								if(res.status === 1){
+									console.log("删除点赞记录成功")
+									param.likes = this.information.likes+1
+									param.infoId = this.information.infoId,
+									updateInfo(param).then((res1)=>{
+											
+											if(res1.status === 1){
+												// this.initData()
+												console.log("点赞新增成功")
+												this.information.likes -= 1
+												this.information.hasLike = false
+											}else{
+												console.log("点赞新增失败",res)
+												// console.log(res.status)
+											}
+									})
+								}else{
+									console.log("删除:",res)
+								}
+							})
+							break
+					}
+				}
+
 			}else{
-				newLikes = --this.information.likes
-				this.hasLike = false
+				param.userId = this.userInfo.userId
+				param.type = 0
+				param.infoId = this.information.infoId
+				addUserLike(param).then(res=>{
+					if(res.status === 1){
+							console.log("新增点赞记录成功")
+							let param1 = {}
+							param1.likes = this.information.likes+1
+							param1.infoId = this.information.infoId,
+							updateInfo(param1).then((res)=>{
+								
+								if(res.status === 1){
+									// this.initData()
+									console.log("点赞新增成功")
+									
+									this.information.likes += 1
+									this.information.hasLike = true
+								}else{
+									console.log("点赞新增失败",res)
+									// console.log(res.status)
+								}
+							})
+					}
+				})
+
 			}
-			let param = {
-				infoId: this.information.infoId,
-				likes: newLikes
-			}
-			updateInfo(param).then((res)=>{
-				console.log(res)
-			})
+			//如果没有点过赞
+			// let newLikes;
+			// if(!this.hasLike){
+			// 	newLikes = ++this.information.likes
+			// 	this.hasLike = true
+			// }else{
+			// 	newLikes = --this.information.likes
+			// 	this.hasLike = false
+			// }
+			// let param = {
+			// 	infoId: this.information.infoId,
+			// 	likes: newLikes
+			// }
+			// updateInfo(param).then((res)=>{
+			// 	console.log(res)
+			// })
 		},
 		/* 评论方法 */
 		//flag=0 里面的评论框  flag=1 外面的评论框
@@ -765,4 +961,363 @@ export default {
 }
 li.nav-news.js-show-menu ul{position: absolute; visibility: hidden; background:#fff; width:250px;  top:60px; left:-50px; z-index:9999; box-shadow:0 1px 15px rgba(18,21,21,.2);padding:10px 5px;}
 #jsddm ul li{ float:left; width:105px; padding-left:20px; line-height:40px;}
+.most-interest-wrapper{
+position:fixed; bottom:-400px; right:0;z-index:10000;transition: .7s ease;
+}
+.most-interest-wrapper.active{
+	bottom: 0;
+} 
+.img-wrapper{
+	position: relative;
+	height: 58%;
+}
+.card__title{
+	z-index: 200;
+}
+.img-wrapper:before{
+	content:"";
+	position:absolute;
+	width:100%;
+	height:100%;
+	z-index:1;
+	opacity:1;
+	-webkit-transition:all .3s ease;
+	transition:all .3s ease;
+	background:-webkit-gradient(linear,0 50%,0 100%,from(rgba(0,0,0,0)),to(#121515));
+}
+.most-interest-wrapper .card__text{
+
+}
+
+</style>
+<style lang="less" scoped> 
+
+  // SETTINGS
+  // ########################################
+ 
+//   @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,300);
+  @cta-color: #FF1744;
+
+
+  // BASIC STYLE
+  //########################################
+
+      :root {
+      transition: all 300ms;
+        
+        &.bg--big {
+        background-color: #00BCD4; }
+        
+        &.bg--medium {
+        background-color: #E53935; }
+        
+        &.bg--small {
+        background-color: #4527A0; }
+      }
+
+      body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-family: 'Roboto', sans-serif;
+      transform: translateZ(0);
+      font-weight: 400; }
+
+      // button reset
+      .most-interest-wrapper button {
+      border: none;
+      background: transparent; }
+
+      
+      // controllers bar
+      .controller-container {
+      margin-bottom: 5%;
+      text-align: center; }
+       
+
+      // controller element
+      .controller {
+      user-select: none;
+      display: inline-block;
+      margin: 0 20px;
+      font-size: 22px;
+      padding: 10px 0;
+      color: #FFF;
+      position: relative;
+      transition: all 100ms cubic-bezier(0.165, 0.840, 0.440, 1.000);
+        
+          &:after {
+          content: ""; 
+          height: 3px;
+          display: block;
+          position: absolute;
+          bottom: 0;
+          width: 0;
+          transition: all 300ms cubic-bezier(0.165, 0.840, 0.440, 1.000);
+          background-color: #FFF; }
+      
+          
+          &.is_current:after {
+          width: 100%; }
+        
+          
+          &:hover, &.is_current {
+          transform: translate3d( 0, -5px, 0 );
+          cursor: pointer; }
+      }
+
+
+  // DEFAULT CARD AND ELEMENTS
+  //########################################
+
+      // basic card block
+      .card {
+      will-change: transform;
+      margin: 8px;
+      position: relative;
+      border-radius: 2px;
+      overflow:  hidden;
+      background-color: #fafafa;
+      height: 35%;
+      width: 344px;
+      transition: all 400ms cubic-bezier(0.165, 0.840, 0.440, 1.000); 
+      .z-1;
+
+        // hover status
+        &:hover {
+        cursor: pointer; }
+      }
+
+      // default card image element
+      .card__image {
+      position: absolute;
+      background-size: cover;
+      background-position: center bottom;
+      background-repeat: no-repat;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: block;
+      opacity: 0;
+      transition: all 200ms cubic-bezier(0.075, 0.820, 0.165, 1.000);
+       
+          // image overlay
+          &:after {
+          content: "";
+          display: block;
+          position: absolute;
+          background-color: rgba(0,0,0,0.1);
+          top: 0;
+          left: 0;
+          right: 0;
+          transition: all 500ms;
+          bottom: 0; }
+      }
+
+
+      // default card title element
+      .card__title {
+      user-select: none;
+      font-size: 24px;
+      color: #FFF;
+      margin: 0;
+      position: absolute;
+      left: 0;
+      right: 0;
+      padding: 0 16px;
+      font-weight: 400;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: all 200ms cubic-bezier(0.075, 0.820, 0.165, 1.000); }
+
+
+      // default card subtitle element
+      .card__subtitle {
+      user-select: none;  
+      font-size: 14px;
+      display: block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      color: #000;
+      left: 88px;
+      right: 0;
+      top: 45px;
+      position: absolute;
+      padding: 0 16px;
+      opacity: 0;
+      transition: all 200ms cubic-bezier(0.075, 0.820, 0.165, 1.000); }
+
+
+      // default card text element
+      .card__text {
+      user-select: none;
+      font-size: 14px;
+		// display: block; 
+		    display: -webkit-box;   
+    -webkit-box-orient: vertical;   
+    -webkit-line-clamp: 2;   
+      left: 0;
+      right: 0;
+      top: 100px;
+      padding: 12px 12px 0 12px;
+      margin: 0;
+      line-height: 1.6;
+      position: absolute;
+      color: #000;
+      overflow: hidden;
+      transition: width 200ms cubic-bezier(0.075, 0.820, 0.165, 1.000);
+      transition: delay 0.1s; }
+
+      
+      // default card action bar element
+      .card__action-bar {
+      user-select: none;
+      position: absolute;
+      bottom: 0;
+      top: auto;
+      left: 0; 
+      right: 0;
+      padding: 0 8px;
+      border-top: 1px solid #E0E0E0;
+      boz-sizing: border-box;
+      height: 52px;
+      transition: left 200ms cubic-bezier(0.075, 0.820, 0.165, 1.000); }
+
+
+      // default card button element
+      .card__button {
+      outline: none;
+      position: relative;
+      display: inline-block;
+      line-height: 52px;
+      padding: 0 16px;
+      color: @cta-color; }
+
+
+  // CARDS MODIFIERS 
+  //########################################
+
+
+      // Big modifier
+      .card--big {
+      .z-5;
+      height: 304px;
+      min-height: 304px;
+        
+          // image element
+          .card__image {
+          border-radius: 1px 1px 0 0;
+          left: 0;
+          right: 0;
+          top: 0;
+          opacity: 1;
+          max-height: 176px; }
+
+          // title element
+          .card__title {
+          top: 135px; }
+
+
+          // text element
+          .card__text {
+          top: 176px; }
+        
+        
+          .card__action-bar {
+          left: 0; }
+      }
+
+
+      // Medium modifier
+      .card--medium {
+      .z-3;
+      height: 208px;
+      min-height: 208px;  
+        
+          // image element
+          .card__image {
+          border-radius: 1px 1px 0 0;
+          left: -100%;
+          right: 0;
+          top: 0;
+          max-height: 0;
+          opacity: 0; }
+
+          // title element
+          .card__title {
+          color: @cta-color;
+          top: 16px; }
+
+
+          // text element
+          .card__text {
+          font-size: 16px;
+          top: 50px; }
+        
+        
+          .card__action-bar {
+          left: 0; }
+      }
+
+
+      // Small modifier
+      .card--small {
+      .z-2;
+      height: 136px;
+      min-height: 136px;
+       
+          // image element
+          .card__image {
+          border-radius: 1px 0 0 1px;
+          left: 0;
+          top: 0;
+          width: 88px;
+          opacity: 1; 
+          max-height: 136px;
+              
+            // image overlay
+            &:after {
+            opacity: 0; }
+          }
+
+          // title element
+          .card__title {
+          color: #000;
+          left: 88px;
+          top: 8px; }
+        
+        
+          .card__subtitle {
+          opacity: 1;
+          left: 88px; }
+          
+
+          // text element
+          .card__text {
+          top: 30px;
+          opacity: 0; }
+        
+          
+          // actionbar element
+          .card__action-bar {
+          left: 88px; }
+      }
+
+
+
+  // MIXINS
+  //########################################
+
+  // z-depth official shadows
+  // (https://www.polymer-project.org/components/paper-elements/demo.html#paper-shadow)
+  
+  .z-1() { box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37); }
+  .z-2() { box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2); }
+  .z-3() { box-shadow: 0 13px 25px 0 rgba(0, 0, 0, 0.3), 0 11px 7px 0 rgba(0, 0, 0, 0.19); }
+  .z-4() { box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.3), 0 14px 12px 0 rgba(0, 0, 0, 0.17); }
+  .z-5() { box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15); }
 </style>

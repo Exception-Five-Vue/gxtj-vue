@@ -17,7 +17,7 @@ font-family:Arial,微软雅黑,"Microsoft yahei","Hiragino Sans GB","冬青黑�
     width: 300px;
     height: 180px;
     padding: 12px;
-    background: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .8);
     z-index: 999;
     /* text-shadow:0 1px 1px rgba(0,0,0,.4); */
     box-shadow:0 -5px 30px rgba(0,0,0,.8);
@@ -2143,7 +2143,6 @@ margin:20px 0;
 
 .article-wrap .article-author .column-link-box {
 position:relative;
-margin-top:20px;
 bottom:0;
 left:0;
 font-size:14px;
@@ -2309,9 +2308,13 @@ margin-top:-2px;
 }
 
 .project-content p {
-color:#bbb;
-line-height:24px;
-}
+    display: -webkit-box;   
+    -webkit-box-orient: vertical;   
+    -webkit-line-clamp: 3;   
+    overflow: hidden;  
+    color:#473838;
+    line-height:24px;
+ }
 
 .btn-blue-cy {
 width:280px;
@@ -2377,6 +2380,7 @@ margin-top:0;
 }
 
 .moder-user-list .project-content .project-title {
+
 font-size:14px;
 line-height:47px;
 }

@@ -1,0 +1,35 @@
+<!-- index.wxml -->
+
+<import src="../common/template/article.wxml"/>
+
+<view>
+    <!-- 头部导航 -->
+    <view class="header">
+      <view class='input-box'>
+        <image class='icon-search' src="/image/icon-search.png"></image>
+          <input type='text' placeholder='请输入关键字' 
+            bindconfirm='requestSearch'
+          ></input>        
+      </view>
+      <text class='btn-cancel' bindtap='back'>取消</text>
+    </view>
+    
+    <view class='place-holder'></view>
+    <view class='hotwords-box'>
+      <view class='title'>搜索热词</view>
+      <view class="table">
+        <block wx:for="{{searchHotWords}}" wx:key="{{code}}">
+          <!-- <view class="tr bg-g"> -->
+            <view class="td">{{item}}</view>
+            <!-- <view class="td">{{item}}</view> -->
+          <!-- </view> -->
+        </block>
+        <view class="td" v-if="{{searchHotWords.length%2==1}}"> 
+          <text decode="{{true}}">&nbsp;</text>
+        </view>
+
+      </view>
+    </view>
+    <include src="../common/template/footer.wxml"/>
+
+</view>

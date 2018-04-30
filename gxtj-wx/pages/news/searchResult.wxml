@@ -1,0 +1,53 @@
+<!-- index.wxml -->
+
+<import src="../common/template/article.wxml"/>
+<import src="../../utils/wxParse/wxParse.wxml"/>
+
+<view>
+    <!-- 头部导航 -->
+    <view class="header">
+      <view class='input-box'>
+        <image class='icon-search' src="/image/icon-search.png"></image>
+          <input type='text' placeholder='请输入关键字' 
+            bindconfirm='getSearchInfos'
+          ></input>        
+      </view>
+      <text class='btn-cancel' bindtap='handleSearch'>取消</text>
+    </view>
+    <view class="articles">
+      <block wx:for="{{ parseTitleArr }}" wx:key=""
+         wx:for-index="index">
+        <navigator url="/pages/news/detail?id={{searchInfoList[index].id }}">
+        <view class="article__item">
+            <view class="article__thumb">
+                <image class="article__image" src="{{ searchInfoList[index].infoImage.image}}"></image>
+            </view>
+            <view class="article__info">
+                <view class="article__title article__title__large">
+                  <!-- <block wx:for="{{replyTemArray}}" wx:key=""> -->
+                      <template is="wxParse" data="{{wxParseData:item}}"/>
+                  <!-- </block> -->
+                </view>
+                <!--<view class="article__desc">
+                    {{ summary }}
+                </view>-->
+                <view class="article__desc">
+                    <text wx:if="{{ searchInfoList[index].tag }}" class="article__source">{{ tag }}</text>
+                    <text class="article__time">{{ searchInfoList[index].publishDate }}</text>
+                    <!-- <view class="article__count">
+                        <image class="article__icon" src="/image/icon-comt.png"></image>
+                        <text>{{ searchInfoList[index].commont }}</text>
+                        <image class="article__icon"             src="/image/icon-priaze.png" 
+                        ></image>
+                        <text>{{ searchInfoList[index].likes }}</text>
+                    </view> -->
+                </view>
+            </view>
+        </view>
+        </navigator>
+        
+      </block>
+    </view>
+    <include src="../common/template/footer.wxml"/>
+
+</view>

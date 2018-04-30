@@ -57,6 +57,7 @@
                         <span class="time">{{info.publishDate|formatDateDiff}}</span>
                         <i class="icon icon-cmt"></i><em>0</em>
                         <i class="icon icon-fvr"></i><em>{{info.likes}}</em>
+                        <i class="icon icon-no-like" style="margin-left:20px" @click="" ></i><em>0</em>
                     </div>
 
                     <div class="mob-sub">{{info.description}}</div>

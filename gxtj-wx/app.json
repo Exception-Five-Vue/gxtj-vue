@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/news/index",
+    "pages/news/detail",
+    "pages/news/manage",
+    "pages/news/type",
+    "pages/news/search",
+    "pages/news/searchResult",
+    "pages/subscibe/index",
+    "pages/subscibe/article",
+    "pages/found/index",
+    "pages/user/index",
+    "pages/user/userReadCount",
+    "pages/bar/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "Oreo",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#333",
+    "selectedColor": "#d81e06",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/news/index",
+        "iconPath": "image/icon-news.png",
+        "selectedIconPath": "image/icon-news-a.png",
+        "text": "新闻"
+      },
+
+      {
+        "pagePath": "pages/user/userReadCount",
+        "iconPath": "image/icon-like.png",
+        "selectedIconPath": "image/icon-like-a.png",
+        "text": "阅读统计"
+      },
+      {
+        "pagePath": "pages/user/index",
+        "iconPath": "image/icon-user.png",
+        "selectedIconPath": "image/icon-user-a.png",
+        "text": "兴趣模型"
+      }
+    ]
+  },
+  "debug": true
+}

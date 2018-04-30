@@ -235,28 +235,22 @@ export default {
                 value:userMod.entertainment, name:'娱乐'
             })
             this.echartsData.push({
-                value:userMod.politics, name:'法律'
+                value:userMod.law, name:'法律'
             })
             this.echartsData.push({
-                value:userMod.sports, name:'体育',
-            })
-            this.echartsData.push({
-                value:userMod.business, name:'财经',
+                value:userMod.business, name:'金融',
             })
             this.echartsData.push({
                 value:userMod.technology, name:'科技',
             })
             this.echartsData.push({
-                value:userMod.car, name:'互联网',
+                value:userMod.internet, name:'互联网',
             })
             this.echartsData.push({
-                value:userMod.military , name:'政治',
+                value:userMod.politics , name:'政治',
             })
             this.echartsData.push({
-                value:userMod.travel, name:'生活',
-            })
-            this.echartsData.push({
-                value:userMod.life, name:'国际',
+                value:userMod.life, name:'生活',
             })
             this.initChart();
         })
