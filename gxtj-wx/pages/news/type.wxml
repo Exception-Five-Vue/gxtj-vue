@@ -7,7 +7,7 @@
     <!-- 头部导航 -->
     <view class="header">
         <view class='title'>{{Type.typeName}}</view>
-        <image bindtap="manageTabs" class="sv-manager" src="/image/icon-manage.png"></image>
+        <!-- <image bindtap="manageTabs" class="sv-manager" src="/image/icon-manage.png"></image> -->
     </view>
     <!-- 滚动页面 -->
     <swiper class="swiper__container" wx:if="{{ swiperList.length }}" indicator-dots="{{ false }}" autoplay="true" interval="3000">
