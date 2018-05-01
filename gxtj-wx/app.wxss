@@ -31,6 +31,9 @@
   position: relative;
   padding-bottom: 40rpx;
 }
+.article__item:hover .btn-dislike{
+  display: block;
+}
 .article__thumb{
   width:4.2rem;
   height: 3rem;
@@ -205,4 +208,21 @@
 }
 .toast-out .toast-in .toast-txt {
   text-align: center;
+}
+
+
+
+.btn-dislike{
+  display: none;
+  position: absolute;
+  top: 0rem;
+  right: 0;
+  width: 4.4rem;
+  height: 1.4rem;
+  text-align: center;
+  line-height: 1.5rem;
+  background: #f63756;
+  color:#fff;
+  font-size: .7rem;
+  border-radius: .2rem;
 }

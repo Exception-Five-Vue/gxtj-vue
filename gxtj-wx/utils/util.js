@@ -185,7 +185,13 @@ function requst(url,method,data = {}){
     infoId = data.infoId
     data1 = { "infoId": infoId }
     p = data1
-  }
+  } 
+  // else if (url.search("pushUserByLogInfo") != -1) {
+  //   header['content-type'] = 'application/x-www-form-urlencoded;charset=utf-8'
+  //   header['page'] = data.infoId
+
+  //   p = {}
+  // }
   // if (data instanceof FormData){
   //   header['content-type'] = 'application/x-www-form-urlencoded;charset=utf-8'
   //   if (url.search("getInfoBySearchBar")!=-1){

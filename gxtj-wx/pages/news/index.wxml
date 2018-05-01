@@ -49,6 +49,14 @@
         </block>
     </view>
 <template is="toast" data="{{txt,isShow,iconClass}}"></template>
+  <view class="rec-box {{isRecBoxShow?'active':''}}">
+    <navigator url="/pages/news/detail?id={{recInfo.infoId}}">
+
+      <view class='title'>{{recInfo.title}}</view>
+      <view class='desc'>{{recInfo.description}}</view>
+    </navigator>
+    <view class='btn-close' bindtap='closeRec'>关闭</view>
+  </view>
     <include src="../common/template/footer.wxml"/>
 
 </view>

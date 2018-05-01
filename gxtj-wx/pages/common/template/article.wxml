@@ -55,30 +55,36 @@ style:news.news_style
 
 <!--普通模式-->
 <template name="newsStyle2">
-    <navigator url="/pages/news/detail?id={{ infoId }}">
     <view class="article__item">
-        <view class="article__thumb">
-          <image class="article__image" src="{{ infoImage.image}}"></image>
-        </view>
-        <view class="article__info">
-            <view class="article__title article__title__large">{{ title }}</view>
-            <!--<view class="article__desc">
-                {{ summary }}
-            </view>-->
-            <view class="article__desc">
-                <text wx:if="{{ tag }}" class="article__source">{{ tag }}</text>
-                <text class="article__time">{{ publishDate }}</text>
-                <view class="article__count">
-                    <image class="article__icon" src="/image/icon-comt.png"></image>
-                    <text>{{ commentCount }}</text>
-                    <image class="article__icon"             src="/image/icon-priaze.png" 
-                    ></image>
-                    <text>{{ likes }}</text>
-                </view>
-            </view>
-        </view>
+        <navigator url="/pages/news/detail?id={{ infoId }}">
+
+          <view class="article__thumb">
+            <image class="article__image" src="{{ infoImage.image}}"></image>
+          </view>
+        </navigator>
+        <navigator url="/pages/news/detail?id={{ infoId }}">
+
+          <view class="article__info">
+              <view class="article__title article__title__large">{{ title }}</view>
+              <!--<view class="article__desc">
+                  {{ summary }}
+              </view>-->
+              <view class="article__desc">
+                  <text wx:if="{{ tag }}" class="article__source">{{ tag }}</text>
+                  <text class="article__time">{{ publishDate }}</text>
+                  <view class="article__count">
+                      <image class="article__icon" src="/image/icon-comt.png"></image>
+                      <text>{{ commentCount }}</text>
+                      <image class="article__icon"             src="/image/icon-priaze.png" 
+                      ></image>
+                      <text>{{ likes }}</text>
+                  </view>
+              </view>
+          </view>            
+        </navigator>
+
+        <view class='btn-dislike' bindtap='dislikeArticle' data-infoId="{{infoId}}">不感兴趣X</view>
     </view>
-    </navigator>
 </template>
 
 <!--三图模式-->

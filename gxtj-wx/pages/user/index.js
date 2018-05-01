@@ -25,17 +25,22 @@ Page({
   },
   onReady:function(){
     // 页面渲染完成
-    // this.data.ec.onInit = initChart()
-    console.log(5)
-    setTimeout(function () {
 
-      // 获取 chart 实例的方式
-    }, 2000);
   },
   onShow:function(){
-    $vm.getMod()
-    this.chartComponent = this.selectComponent('#mychart-dom-bar');
-    this.initC()
+    // $vm.getMod()
+    this.getMod()
+
+  },
+  getMod() {
+      // if ($vm.globalData.userMod) {
+      //   resolve($vm.globalData.userMod)
+      // }
+      utils.get('api/userMod/getUserMod').then(res => {
+      $vm.globalData.userMod = res.result        
+      this.chartComponent = this.selectComponent('#mychart-dom-bar');
+        this.initC()
+      })
   },
   onHide:function(){
     console.log(2)

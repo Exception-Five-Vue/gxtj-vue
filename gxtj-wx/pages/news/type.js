@@ -100,12 +100,21 @@ Page({
       this.setData({
         Type
       })
-        // 获取ccurrentTab.没有切换分类
-        // if(this.data.currentTab === chid){
-        //     return false
-        // }
-        // this.setData({ currentTab:chid })
-        // this.getNewsList(chid,0)
+    },
+    dislikeArticle(ev){
+      console.log("不喜欢这篇文章", ev.target.dataset.infoid)
+      let infoId = ev.target.dataset.infoid
+      for(let i in this.data.displayInfoList) {
+      if (this.data.displayInfoList[i].infoId === infoId) {
+        this.data.displayInfoList.splice(i, 1)
+        this.setData({
+          displayInfoList: this.data.displayInfoList
+        })
+        $vm.toastShow(this, "将减少推送类似资讯", "icon-correct");  
+
+        return
+      }
+      }
     },
     getNewsList(chid = 0,page = 0){
         
