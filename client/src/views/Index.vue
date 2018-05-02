@@ -468,7 +468,10 @@ export default {
                 // getLogInfos().then(res=>{
                 //     if(res.status === 1){
                 //         this.logInfoList = res.result
-                        pushUserByLogInfo().then((res)=>{
+                        let param = {
+                            'page': this.page
+                        }
+                        pushUserByLogInfo(param).then((res)=>{
                             if(res.status === 1){
                                 console.log("文章:",res.result)
                                 /* 设置文章为已读或未读 */
@@ -527,7 +530,7 @@ export default {
                                 param.append('id', infos[0].infoId)
                                 pushInfoByKeyword(param).then(res=>{
                                     if(res.status === 1){
-                                        this.mostInterestInfos = res.result
+                                        this.mostInterestInfos = res.result.splice(0,6)
                                     }
                                     console.log(res)
                                 })
@@ -659,8 +662,8 @@ export default {
             this.showSuccessMsg({title:"成功",message:"将减少推荐类似内容"})
         },
         loadMore(){
+            this.page += 1
             if(!this.isLogined){
-                this.page += 1
                 getInfoByDate(this.page).then((res)=>{
                     console.log(res)
                     if(res.status === 1){
@@ -673,22 +676,24 @@ export default {
                     }
                 })
             }else{
-                let infoLength = this.infoList.length
-                if(infoLength <= 10){
-                    this.displayInfoList = this.displayInfoList.concat(this.infoList)
-                    this.infoList.splice(0,infoLength)
-                    this.showInfoMsg({title:"信息",message:"休息一下吧,暂时没有更多资讯了"})
-                }else{
-                    let length = this.displayInfoList.length
-                    for(let i=0; i<10;i++){
-                        this.displayInfoList.push( this.infoList[i])
-                    }
-                    this.infoList.splice(0,10)
+                let param = {
+                    'page': this.page
                 }
-               
-                console.log(this.infoList)
+                pushUserByLogInfo(param).then(res=>{
+                    let infoLength = res.result.length
+                    if(infoLength <= 10){
+                        this.displayInfoList = this.displayInfoList.concat(res.result)
+                        // this.infoList.splice(0,infoLength)
+                        this.showInfoMsg({title:"信息",message:"休息一下吧,暂时没有更多资讯了"})
+                    }else{
+                        let length = this.displayInfoList.length
+                        for(let i=0; i<10;i++){
+                            this.displayInfoList.push( res.result[i])
+                        }
+                        // this.infoList.splice(0,10)
+                    }
+                })
             }
-            console.log(this.displayInfoList)
         }
     },
     //通知插件

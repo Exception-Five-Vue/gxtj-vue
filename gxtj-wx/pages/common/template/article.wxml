@@ -62,7 +62,7 @@ style:news.news_style
             <image class="article__image" src="{{ infoImage.image}}"></image>
           </view>
         </navigator>
-        <navigator url="/pages/news/detail?id={{ infoId }}">
+        <navigator url="/pages/news/detail?id={{ infoId }}" style='width:100%;'>
 
           <view class="article__info">
               <view class="article__title article__title__large">{{ title }}</view>
