@@ -88,6 +88,7 @@
   padding: 15rpx;
   color: #000;
   transition: .5s ease;
+  z-index: 999;
 }
 
 .rec-box.active{

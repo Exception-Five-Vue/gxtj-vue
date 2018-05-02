@@ -318,6 +318,7 @@ export default {
             receiveInfo: null,
             isReceiveInfo: false,
             page: 1,
+            msgTimer: null,
             hotKeyWords: ['李彦宏', '电影','人工智能','自动','女性','社会','退休','SUV','收购','香港','中国','微博']
 
         }
@@ -331,7 +332,16 @@ export default {
         '$route' (to, from) {  
             // 如果type改变
             if(to.params.typeId !== from.params.typeId){
-                this.$router.go(0)
+                // this.$router.go(0)
+                this.typeId  = to.params.typeId
+                getTypeById(this.typeId).then(res=>{
+                    if(res.status === 1){
+                        this.msgTimer = null
+                        this.typeName = res.result.typeName
+                        this.pushInfo()
+                    }
+                })
+
             } 
             console.log(to,from)
         }  
@@ -355,32 +365,59 @@ export default {
                 this.typeName = res.result.typeName
             }
         })
-        pushInfoByTypeId(this.typeId).then(res=>{
-            if(res.status === 1){
-                for(let item of res.result){
-                    item.isRemove = false
-                }
-                this.infoList = res.result
-                let infoLength = this.infoList.length
-                if(infoLength <= 10){
-                    this.displayInfoList = this.infoList
-                    this.infoList = []
-                }else{
-                    for(let i=0; i<10;i++){
-                        this.displayInfoList[i] = this.infoList[i]
-                    }
-                    this.infoList.splice(0,10)
-                }
-                this.isMsgAlert = false
-                this.isMsgAlertText = `为您推荐了${this.displayInfoList.length}条文章`
-                setTimeout(()=>{
-                    this.isMsgAlert = true
-                },3000)
-                console.log(res)
-            }
-        })
+        this.pushInfo()
+        // pushInfoByTypeId(this.typeId).then(res=>{
+        //     if(res.status === 1){
+        //         for(let item of res.result){
+        //             item.isRemove = false
+        //         }
+        //         this.infoList = res.result
+        //         let infoLength = this.infoList.length
+        //         if(infoLength <= 10){
+        //             this.displayInfoList = this.infoList
+        //             this.infoList = []
+        //         }else{
+        //             for(let i=0; i<10;i++){
+        //                 this.displayInfoList[i] = this.infoList[i]
+        //             }
+        //             this.infoList.splice(0,10)
+        //         }
+        //         this.isMsgAlert = false
+        //         this.isMsgAlertText = `为您推荐了${this.displayInfoList.length}条文章`
+        //         setTimeout(()=>{
+        //             this.isMsgAlert = true
+        //         },3000)
+        //         console.log(res)
+        //     }
+        // })
     },
     methods:{
+        pushInfo(){
+            pushInfoByTypeId(this.typeId).then(res=>{
+                if(res.status === 1){
+                    for(let item of res.result){
+                        item.isRemove = false
+                    }
+                    this.infoList = res.result
+                    let infoLength = this.infoList.length
+                    if(infoLength <= 10){
+                        this.displayInfoList = this.infoList
+                        this.infoList = []
+                    }else{
+                        for(let i=0; i<10;i++){
+                            this.displayInfoList[i] = this.infoList[i]
+                        }
+                        this.infoList.splice(0,10)
+                    }
+                    this.isMsgAlert = false
+                    this.isMsgAlertText = `为您推荐了${this.displayInfoList.length}条文章`
+                    this.msgTimer = setTimeout(()=>{
+                        this.isMsgAlert = true
+                    },3000)
+                    console.log(res)
+                }
+            })
+        },
         closePushInfo(){
 			this.isReceiveInfo = false
 		},

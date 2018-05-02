@@ -46,7 +46,10 @@ export const getInfoByInfoId = id => { return axios.post(`/public/information/ge
 /* 文章推送 */
 export const getPushInfo = param => { return axios.post(`/public/pushInfo`,param).then(res => res.data); };
 
-export const pushUserByLogInfo = () => { return axios.post(`/api/push/pushUserByLogInfo`).then(res => res.data); };
+export const pushUserByLogInfo = (param) => { 
+  axios.defaults.headers.common['page'] = param.page;
+  return axios.post(`/api/push/pushUserByLogInfo`).then(res => res.data); 
+};
 
 export const pushInfoByTypeId = (typeId) => { return axios.get(`/public/push/pushInfoByTypeId/${typeId}`).then(res => res.data); };
 

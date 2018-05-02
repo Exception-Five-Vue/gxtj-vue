@@ -75,10 +75,7 @@ Page({
           this.commentList = res1.result
           if (wx.getStorageSync('token')){
             this.data.pushPage = 1
-            let param = {
-              "page": this.data.pushPage
-            }
-            $vm.utils.post('/api/push/pushUserByLogInfo', param).then(res => {
+            $vm.utils.post('/api/push/pushUserByLogInfo').then(res => {
               // console.log(res)
               if (res.status === 1) {
 
@@ -202,18 +199,18 @@ Page({
         let length = this.infoList.length
       
         if (length <= 10) {
-          this.data.pushPage += 1
-          let param = { "page": this.data.pushPage}
+          this.data.page += 1
+          let page = this.data.page
+          console.log("当前页数:",page)
           
-          $vm.utils.post(`/api/push/pushUserByLogInfo`,param).then(res => {
+          $vm.utils.get(`/public/information/findInfoByDate/${page}`).then(res => {
             // console.log(res)
             if (res.status === 1) {
 
               let infoList = res.result.filter(item => {
                 return item.publishDate = formatDate(item.publishDate)
               })
-              console.log("当前页数:", param, infoList)
-
+              console.log(this.infoList,infoList)
               this.data.displayInfoList = this.data.displayInfoList.concat(infoList)
 
               this.setData({
@@ -222,7 +219,9 @@ Page({
 
             }
           })
-
+          // this.data.displayInfoList = this.data.displayInfoList.concat(this.infoList)
+          // this.infoList.splice(0, length)
+          // $vm.toastShow(this, "休息一会吧", "icon-correct");
         } else {
           for (let i = 0; i < 10; i++) {
             this.data.displayInfoList.push(this.infoList[i])
