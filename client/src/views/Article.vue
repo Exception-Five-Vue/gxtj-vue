@@ -21,25 +21,7 @@
         <div class="wrap-left pull-left">
             <!--文章内容页-->
             <div class="article-left-btn-group is-sticky" id="article-left-btn-group197460">
-                <ul>
-                                            <!--普通文章分享微博-->
-                    <li><a href=""><i class="icon icon-article icon-article-wb js-weibo js-share-article" data-location="article" data-f="pc-weibo-article" aid="197460"></i></a></li>
-                        <!--普通文章分享微信-->
-                    <li class="weixin">
-                        <div class="weixin-Qr-code "></div>
-                        <a class="js-weixin" data-f="pc-friends-article"><i class="icon icon-article icon-article-pyq" ></i></a>
-                    </li>
-                        <!--普通文章分享支付宝 -->
-                    <!-- <li class="zhifubao">
-                        <div class="zhifubao-Qr-code"></div>
-                        <a class="js-zhifubao" data-f="pc_alipay_article"><i class="icon icon-article icon-article-zfb" ></i></a>
-                    </li> -->
-                        <!--普通文章分享qq空间 -->
-                    <li><a href=""><i class="icon icon-article icon-article-qzone js-qzone js-share-article" data-location="article" data-f="pc-qzone-article" aid="197460"></i></a></li>
-                    <li><a class="js-article-pl-anchor"><i class="icon icon-article icon-article-pl">评论</i></a></li>
-                                            <!--普通文章收藏-->
-                    <li><a class="js-collection-article"><i class="icon icon-article icon-article-col">收藏</i></a></li>
-                </ul>
+      
             </div>
             <div class="article-wrap">
                 <h1 class="t-h1">{{information.title}}</h1>
@@ -116,41 +98,6 @@
                         <a href="javascript:void(0)" class="span-mark-author active js-default-new-pl" data-type="agree">默认评论</a>
                         <i class="icon icon-line-pl"></i>
                         <a href="javascript:void(0)" class="span-mark-author new js-default-new-pl" data-type="dateline">最新评论</a>
-                        <!-- <div class="pl-box-wrap">
-                			<div class="pl-box-top">
-            					<div class="dropdown pull-right">
-                					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    					<span class="caret"></span>
-                					</button>
-            					</div>
-            					<div class="author-info">
-                					<div class="author-face"><img src="https://img.huxiucdn.com/auth/data/avatar/001/54/60/18_1479690318.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></div>
-                					<span class="author-name"><a href="#">请叫我__宝器</a><a href="/vip" target="_blank"></a></span>
-                					<span class="time">6天前</span>
-            					</div>
-            					<div class="pl-content">三个这么浅显的例子和分析就能让作者得出结论，这"一叶知秋"的本事我也是服的。</div>
-                    		</div>
-        					<div class="pl-box-btm">
-                            	<div class="article-type pull-right">
-                					<div class="icon-like-prompt">
-                    					<i class="icon icon-like active"></i><span class="c1">+1</span>
-                					</div>
-                					<div class="icon-no-like-prompt">
-                    					<i class="icon icon-no-like active"></i><span class="c1">+1</span>
-                					</div>
-                					<ul>
-                    					<li class="js-icon-like" data-type="like"><i class="icon icon-like "></i><span class="like">2</span></li>
-                    					<li class="js-no-icon-like" data-type="no-like"><i class="icon icon-no-like "></i><span class="like">1</span></li>
-                					</ul>
-            					</div>
-            					<div class="btn-dp transition js-add-dp-box"><i class="icon icon-dp"></i>我要点评</div>
-            					<div class="pl-form-box dp-article-box">
-                					<textarea class="form-control" placeholder="客官，8个字起评，不讲价哟"></textarea>
-                					<button class="btn btn-article js-article-dp">发表</button>
-            					</div>
-        					</div>
-                            
-    					</div> -->
 						<div class="pl-box-wrap" v-show="commentList.length === 0">
 							<p style="padding: 50px 0;font-size:24px;">这里空空如也，期待你的发声</p>
 						</div>
@@ -268,7 +215,7 @@
         		<span class="span-mark"></span>
         		<div class="search-history search-hot">
             		<ul>
-                   	<li class="transition" v-for="item in hotKeyWords"><a href="#" target="_blank">{{item}}</a></li>
+                   	<li class="transition" v-for="item in hotKeyWords" @click="searchHotWords(item)"><router-link :to="``">{{item}}</router-link></li>
             		</ul>
         		</div>
     		</div>
@@ -315,15 +262,17 @@
 		<!-- Cards-->
 		<h2 style="color:#000;font-size:20px">给您推荐了以下感兴趣的内容:</h2>
 		<div class="card card--big">
-			<div class="img-wrapper">
-			<img class="card__image" :src="`${mostInterestInfos[0].infoImage.image}`" :onerror="defaultImg" :alt="mostInterestInfos[0].title"></img>
+         <router-link :to="{path:'/article/'+mostInterestInfos[0].infoId}">
+				<div class="img-wrapper">
+				<img class="card__image" :src="`${mostInterestInfos[0].infoImage.image}`" :onerror="defaultImg" :alt="mostInterestInfos[0].title"></img>
 
-			</div>
-			<h2 class="card__title">{{mostInterestInfos[0].title}}</h2>
-			<span class="card__subtitle">By Mattia Astorino</span>
-			<p class="card__text">
-				{{mostInterestInfos[0].description}}
-			</p>
+				</div>
+				<h2 class="card__title">{{mostInterestInfos[0].title}}</h2>
+				<span class="card__subtitle">By Mattia Astorino</span>
+				<p class="card__text">
+					{{mostInterestInfos[0].description}}
+				</p>
+			</router-link>
 			<div class="card__action-bar">
 				<button class="card__button" @click="isMostInterestShow = false">关闭</button>
 				<button class="card__button" @click="changeMostInterest()">试试别的</button>
@@ -334,7 +283,7 @@
 </template>
 
 <script>
-import {addUserLike,deleteUserLike,updateUserLike,getAllUserLike,makeUserRead,updateUserModForRead,getLogInfos,getNewEndTime,pushInfoByKeyword,getInfoByInfoId, 
+import {getHotWords,addUserLike,deleteUserLike,updateUserLike,getAllUserLike,makeUserRead,updateUserModForRead,getLogInfos,getNewEndTime,pushInfoByKeyword,getInfoByInfoId, 
 getPushInfo,getInfoByDate,getCommentsByInfoId,addComment,updateComment, 
 updateInfo,getUserInfoById} from '../api/api.js'
 import {GetDateDiff,formatDate} from '../utils/date.js';
@@ -379,7 +328,7 @@ export default {
 			isReceiveInfo: false,
 			page: 1,
 			hotInfoList: null,
-			hotKeyWords: ['李彦宏', '电影','人工智能','自动','女性','社会','退休','SUV','收购','香港','中国','微博'],
+			hotKeyWords: [],
 			infoKeyWord: [],
 			timer: null,
 			userLikeList: []
@@ -404,6 +353,13 @@ export default {
 		}
 		this.infoId  = this.$route.params.id
 		console.log(this.infoId)
+		/* 获取热词 */
+		getHotWords().then(res=>{
+			if(res.status === 1){
+				this.hotKeyWords = res.result.splice(0,12)
+				console.log("热词",res)
+			}
+		})
 		/* 绑定评论列表数据 */
 		this.initCommentList(this.infoId)
 		getInfoByDate(1).then(res=>{
@@ -552,6 +508,9 @@ export default {
 					console.log(res)
 				})
 			}
+		},
+		searchHotWords(p){
+			this.$router.push({name:'search',params: { searchContent: p}})
 		},
 		changeMostInterest(){
 			if(this.mostInterestInfos.length === 1){

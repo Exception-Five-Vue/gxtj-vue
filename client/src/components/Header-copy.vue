@@ -44,7 +44,7 @@
             </div>
             <div class="container">
                 <div class="navbar-header transition">
-                    <a href="#" title="首页"><img src="../assets/images/logo.jpg" alt="Oreo网" title="首页" /></a>
+                    <a href="#" title="首页"><img src="../assets/images/logo.png" alt="Oreo网" title="首页" /></a>
                 </div>
                 <ul class="nav navbar-nav navbar-left" id="jsddm">
                     <li class="nav-news js-show-menu">

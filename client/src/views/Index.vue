@@ -60,9 +60,9 @@
             <div class="mod-b mod-art" v-for="(info,index) in displayInfoList" v-if="index>2 && !info.isRemove">
             	 <div class="mod-angle" v-show="info.reads>0">热</div>
                  <div class="mod-thumb ">
-                       <a class="transition" :title="info.title" href="#" target="_blank">
+                       <router-link :to="`/article/${info.infoId}`" class="transition" :title="info.title">
 						  <img class="lazy" style="height:100%" v-if="info.infoImage!=null" :src="`${info.infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低">
-                       </a>
+                       </router-link>
                  </div>
                  <div class="column-link-box not-interest" @click="notInterest(index)">
                  	<!-- <a href="#" class="column-link" target="_blank"> -->
@@ -74,7 +74,7 @@
                     <h2><router-link :to="`/article/${info.infoId}`" class="transition msubstr-row2" :class="{'isRead': info.isRead}">{{info.title}}</router-link></h2>
 					<div class="mob-author">
                         <div class="author-face">
-                            <a href="#" target="_blank"><img src="../assets/sy-img/59_1502432173.jpg"></a>
+                            <router-link :to="`/article/${info.infoId}`"><img src="../assets/sy-img/59_1502432173.jpg"></router-link>
                         </div>
                         <a href="#" target="_blank">
                         <span class="author-name ">{{info.author}}</span>

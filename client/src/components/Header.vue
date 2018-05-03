@@ -24,7 +24,7 @@
                         <div class="search-history search-hot"  v-if="searchHotWords!=null && searchHotWords.length>0">
                             <strong style="display:block">热搜词</strong>
                             <ul>
-                                <li class="transition" v-for="item in searchHotWords"><a href="#">{{item}}</a></li>
+                                <li class="transition" v-for="item in searchHotWords" @click="searchByHot(item)"><a href="#">{{item}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
             </div>
             <div class="container">
                 <div class="navbar-header transition">
-                    <a @click="flush" title="首页"><img src="../assets/images/logo.jpg" alt="Oreo" title="首页" width="50px" height="50px"/></a>
+                    <a @click="flush" title="首页"><img src="../assets/images/logo.png" alt="Oreo" title="首页" style="width:120px"/></a>
                 </div>
                 <ul class="nav navbar-nav navbar-left" id="jsddm">
                     <!-- <li class="nav-news js-show-menu">
@@ -74,7 +74,7 @@
                             </ul>
                         </router-link>
                         <!-- <a @click="logout">&nbsp;&nbsp;&nbsp;退出</a></li> -->
-                    <li><a class="cd-tougao">投稿</a></li>
+                    <li></li>
                 </ul>
             </div>
             <div class="cd-user-modal" :class="{'is-visible': isLoginShow || isRegisterShow}"> 
@@ -169,6 +169,9 @@ export default {
         })
     },
     methods: {
+        searchByHot(p){
+            this.$router.push({name:'search',params: { searchContent: p}})
+        },
         handleForm(flag) {
             this.$emit('handleForm',flag)
         },

@@ -135,7 +135,7 @@
         		<span class="span-mark"></span>
         		<div class="search-history search-hot">
             		<ul>
-                   	<li class="transition" v-for="item in hotKeyWords"><a href="#" target="_blank">{{item}}</a></li>
+                   	    <li class="transition" v-for="item in hotKeyWords" @click="searchHotWords(item)"><router-link :to="``">{{item}}</router-link></li>
             		</ul>
         		</div>
     		</div>
@@ -286,7 +286,7 @@
   </section>
 </template>
 <script>
-import {getTypeById,getUserInfoById,requestLogin, requestRegister,getInfoByDate,pushInfoByTypeId} from '../api/api.js'
+import {getTypeById,getHotWords,getUserInfoById,requestLogin, requestRegister,getInfoByDate,pushInfoByTypeId} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
@@ -319,7 +319,7 @@ export default {
             isReceiveInfo: false,
             page: 1,
             msgTimer: null,
-            hotKeyWords: ['李彦宏', '电影','人工智能','自动','女性','社会','退休','SUV','收购','香港','中国','微博']
+            hotKeyWords: []
 
         }
     },
@@ -358,7 +358,12 @@ export default {
             })
             this.isLogined = true
         }
-
+		getHotWords().then(res=>{
+			if(res.status === 1){
+				this.hotKeyWords = res.result.splice(0,12)
+				console.log("热词",res)
+			}
+		})
         this.typeId  = this.$route.params.typeId
         getTypeById(this.typeId).then(res=>{
             if(res.status === 1){
@@ -418,6 +423,9 @@ export default {
                 }
             })
         },
+        searchHotWords(p){
+			this.$router.push({name:'search',params: { searchContent: p}})
+		},
         closePushInfo(){
 			this.isReceiveInfo = false
 		},
