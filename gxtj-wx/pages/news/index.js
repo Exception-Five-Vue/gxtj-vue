@@ -29,26 +29,27 @@ Page({
     onShow(){
         this.getTypeList()
         this.getInfoList()
+        this.getPushInfoGroup()
     },
     onReady(){
 
     },
     onLoad () {
-      $vm.utils.get(`/public/information/findInfoByDate/2`).then(res => {   
-        if(res.status === 1){
+      // $vm.utils.get(`/public/information/findInfoByDate/2`).then(res => {   
+      //   if(res.status === 1){
 
-          let infoList = res.result
-          let index = Math.floor(Math.random()*infoList.length)
-          setTimeout(() => {
-            this.data.recInfo = infoList[index]
-            this.data.isRecBoxShow = true
-            this.setData({
-              isRecBoxShow: this.data.isRecBoxShow,
-              recInfo: this.data.recInfo
-            })
-          }, 100)
-        }
-      })
+      //     let infoList = res.result
+      //     let index = Math.floor(Math.random()*infoList.length)
+      //     setTimeout(() => {
+      //       this.data.recInfo = infoList[index]
+      //       this.data.isRecBoxShow = true
+      //       this.setData({
+      //         isRecBoxShow: this.data.isRecBoxShow,
+      //         recInfo: this.data.recInfo
+      //       })
+      //     }, 100)
+      //   }
+      // })
     },
     handleSearch(){
       wx.navigateTo({
@@ -63,6 +64,10 @@ Page({
           typeList: res.result
         })
       })
+    },
+    getPushInfoGroup(){
+
+      
     },
     getInfoList() {
       this.data.page = 1
@@ -115,9 +120,11 @@ Page({
                   }
                   this.infoList.splice(0, 10)
                 }
-                console.log("!!!:", this.data.displayInfoList)
+                this.isMsgAlert = true
                 this.alertMsg = `为您推荐了${this.data.displayInfoList.length}条新闻`
-
+                setTimeout(()=>{
+                  this.isMsgAlert = false
+                },2500)
                 this.setData({
                   displayInfoList: this.data.displayInfoList,
                   swiperList: this.data.swiperList,
@@ -130,6 +137,14 @@ Page({
                     isMsgAlert: this.isMsgAlert,
                   })
                 }, 2000)
+
+              }
+            })
+            // 获取隐性分组资讯
+            $vm.utils.post('/api/push/pushInfoByUserGroup').then(res => {
+              if (res.status === 1) {
+                console.log("隐性分组资讯")
+                this.recInfo = res.result
 
               }
             })

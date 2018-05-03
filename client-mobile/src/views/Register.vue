@@ -125,7 +125,7 @@
             </button>
             <div class="logo-box">
                 <a href="/">
-                    <img src="../assets/image/logo.jpg">
+                    <img src="../assets/image/logo.png">
                 </a>
             </div>
             <div class="pull-right search-box js-search-cancel js-hmt-detection" @click="searchBoxShow = !searchBoxShow">

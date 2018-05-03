@@ -67,6 +67,8 @@ export const updateInfo = param => { return axios.post(`/public/information/upda
 //根据searchContent返回资讯列表
 export const getInfoBySearchBar = param => { return axios.post(`/public/search/getInfoBySearchBar`, param).then(res => res.data); };
 
+export const getHotWords = () => { return axios.get(`/public/information/getHotWords`).then(res => res.data); };
+
 /* comment */
 export const getCommentsByInfoId = id => { return axios.get(`/public/information/${id}/comment`).then(res => res.data); };
 
