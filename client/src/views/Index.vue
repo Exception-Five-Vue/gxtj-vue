@@ -247,7 +247,7 @@
 
 <script>
 
-import {deleteUserLike,addUserLike,updateUserLike,getAllUserLike,updateInfo,pushInfoByKeyword,getAllType, getUserInfoById,requestLogin, 
+import {pushInfoByUserGroup,deleteUserLike,addUserLike,updateUserLike,getAllUserLike,updateInfo,pushInfoByKeyword,getAllType, getUserInfoById,requestLogin, 
 requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo, getInfoByInfoId} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
@@ -310,6 +310,21 @@ export default {
                 this.hotCommentList = res.result
             }
         })
+        pushInfoByUserGroup().then(res=>{
+            if(res.status === 1){
+                let index = Math.floor(Math.random()*res.result.length)
+                this.receiveInfo = res.result[index]
+                    //为了有动画效果
+                    setTimeout(()=>{
+                        this.isReceiveInfo = true
+                        // setTimeout(()=>{
+                        //     _this.getReceiveInfoList[index].hasPushed = true
+                        // },8000)
+                    },200)
+                    
+            }
+        })
+
         console.log(this.getReceiveInfoList)
 
     },
