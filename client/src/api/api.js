@@ -57,6 +57,7 @@ export const pushInfoByKeyword = (param) => { return axios.post(`/api/push/pushI
 
 export const likeArticle = (param) => { return axios.post(`/public/pushInfo`,param).then(res => res.data); };
 
+export const pushInfoByUserGroup = () => { return axios.post(`/api/push/pushInfoByUserGroup`).then(res => res.data); };
 
 //根据资讯发布时间获取资讯（ 20 条）
 export const getInfoByDate = page => { return axios.get(`/public/information/findInfoByDate/${page}`).then(res => res.data); };
