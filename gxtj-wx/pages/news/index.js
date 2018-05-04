@@ -143,9 +143,17 @@ Page({
             // 获取隐性分组资讯
             $vm.utils.post('/api/push/pushInfoByUserGroup').then(res => {
               if (res.status === 1) {
-                console.log("隐性分组资讯")
-                this.recInfo = res.result
 
+                let index = Math.floor(Math.random() * res.result.length)
+                console.log("隐性分组资讯", index)
+                setTimeout(() => {
+                  this.data.recInfo = res.result[index]
+                  this.data.isRecBoxShow = true
+                  this.setData({
+                    isRecBoxShow: this.data.isRecBoxShow,
+                    recInfo: this.data.recInfo
+                  })
+                }, 100)
               }
             })
           }else{
