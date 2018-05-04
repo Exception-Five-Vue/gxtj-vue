@@ -226,12 +226,12 @@
         		<ul>
 					<li v-for="index in 6">
 						<div class="hot-article-img">
-								<a href="#" target="_blank">
-									<img :src="`${hotInfoList[index].infoImage.image}`" :onerror="defaultImg">
-								</a>
-						
+						   <router-link :to="`/article/${hotInfoList[index].infoId}`">
+								<img :src="`${hotInfoList[index].infoImage.image}`" :onerror="defaultImg">
+						   </router-link>
 						</div>
-						<a href="#" class="transition" target="_blank">{{hotInfoList[index].title}}</a>
+						   <router-link :to="`/article/${hotInfoList[index].infoId}`">
+{{hotInfoList[index].title}}</router-link>
 					</li>
 				</ul>
     		</div>

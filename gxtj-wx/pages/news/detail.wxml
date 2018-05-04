@@ -32,7 +32,10 @@
 <!--  display: inline-block-->
   <block wx:for="{{relatedInfos}}" wx:key="id">
     <view class="article-box">
-      <image mode="aspectFill" src="{{item.infoImage.image}}"></image> 
+      <navigator url="/pages/news/detail?id={{ item.infoId }}">
+
+        <image mode="aspectFill" src="{{item.infoImage.image}}"></image> 
+      </navigator>
       <view class='title'>{{item.title}}</view>
     </view>
   </block>

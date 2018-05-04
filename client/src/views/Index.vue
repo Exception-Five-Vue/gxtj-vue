@@ -20,7 +20,7 @@
 	<div class="wrap-left pull-left">
         <div class="big-pic-box" v-if="displayInfoList != null">
             <div class="big-pic">
-                <a href="#" target="_blank" class="transition" :title="displayInfoList[0].title">
+                <router-link :to="`/article/${displayInfoList[0].infoId}`"  class="transition">
                     <div class="back-img">
                         <img class="lazy" style="height:100%" v-if="displayInfoList[0].infoImage!=null" 
                         :src="`${displayInfoList[0].infoImage.image}`" :onerror="defaultImg" :alt="displayInfoList[0].title">
@@ -28,29 +28,29 @@
                     <div class="big-pic-content">
                         <h1 class="t-h1">{{displayInfoList[0].title}}</h1>
                     </div>
-                </a>
+                </router-link>
             </div>
             <div class="big2-pic big2-pic-index big2-pic-index-top">
-                <a href="#" class="back-img transition" target="_blank" :title="displayInfoList[1].title">
+                <router-link :to="`/article/${displayInfoList[1].infoId}`"  class="back-img transition">
                     <img class="lazy" style="height:100%" v-if="displayInfoList[1].infoImage!=null" 
                     :src="`${displayInfoList[1].infoImage.image}`" :onerror="defaultImg" :alt="displayInfoList[1].title">
-                </a>
-                <a href="#" target="_blank" :title="displayInfoList[1].title">
+                </router-link>
+                <router-link :to="`/article/${displayInfoList[1].infoId}`">
                     <div class="big2-pic-content">
                         <h2 class="t-h1">{{displayInfoList[1].title}}</h2>
                     </div>
-                </a>
+                </router-link>
             </div>
             <div class="big2-pic big2-pic-index big2-pic-index-bottom">
-                <a href="#" class="back-img transition" target="_blank" :title="displayInfoList[2].title">
+                <router-link :to="`/article/${displayInfoList[2].infoId}`"  class="back-img transition">
                     <img class="lazy" style="height:100%" v-if="displayInfoList[2].infoImage!=null" 
                     :src="`${displayInfoList[2].infoImage.image}`" :onerror="defaultImg" :alt="displayInfoList[2].title">
-                </a>
-                <a href="#" target="_blank" :title="displayInfoList[2].title">
+                </router-link>
+                <router-link :to="`/article/${displayInfoList[2].infoId}`">
                     <div class="big2-pic-content">
                         <h2 class="t-h1">{{displayInfoList[2].title}}</h2>
                     </div>
-                </a>
+                </router-link>
             </div>
        </div>
         <div class="msgAlert" :class="{'active': isMsgAlert}">
@@ -154,17 +154,19 @@
         <span class="pull-right project-more"><a href="#" class="transition" target="_blank">全部</a></span>
         <span class="span-mark"></span>
         <ul v-if="mostInterestInfos != null">
-            <li v-for="info in mostInterestInfos" v-if="info != undefined">
-                <div class="project-pic">
-                    <img :src="`${info.infoImage.image}`" :onerror="defaultImg" :alt="info.title">
-                </div>
-                <div class="project-content">
-                     <div class="project-title" style="font-weight: 600;color: #000;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">
-                         <a href="#" class="transition" target="_blank">{{info.title}}</a>
-                     </div>
-                     <p>{{info.description}}</p>
-                 </div>
-            </li>
+                <li v-for="info in mostInterestInfos" v-if="info != undefined">
+                    <router-link :to="`/article/${info.infoId}`">
+                        <div class="project-pic">
+                            <img :src="`${info.infoImage.image}`" :onerror="defaultImg" :alt="info.title">
+                        </div>
+                        <div class="project-content">
+                            <div class="project-title" style="font-weight: 600;color: #000;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">
+                                <a href="#" class="transition" target="_blank">{{info.title}}</a>
+                            </div>
+                            <p>{{info.description}}</p>
+                        </div>
+                    </router-link>
+                </li>
          </ul>
         <!-- <div class="project-btn-box">
             <a class="js-open-cy btn btn-blue-cy transition">立即报名，获得曝光机会！</a>

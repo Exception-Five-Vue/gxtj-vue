@@ -338,7 +338,7 @@ export default {
         }
                     // console.log(product)
         source.push(product)
-        source.push(["阈值",30,30,30,30,30,30,30,30,30,30])
+        source.push(["阈值",15,15,15,15,15,15,15,15,15,15])
         for(let item of typeArr){
             console.log(item)
             source.push(item)

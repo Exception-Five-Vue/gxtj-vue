@@ -83,7 +83,7 @@ Page({
       obj.smooth = true
       obj.data = []
       for (let i = 0; i < 7; i++) {
-        obj.data.push(30)
+        obj.data.push(15)
       }
       series.push(obj)
       typeData.push("阈值")
