@@ -222,7 +222,7 @@ function requst(url,method,data = {}){
   }
   return new Promise((resove,reject) => {
     wx.request({
-      url: 'http://www.yannyao.top:8000/' + rewriteUrl,
+      url: 'http://169.254.201.19:8000/' + rewriteUrl,
       data: p,
       header: header,
       method: method.toUpperCase(), // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
